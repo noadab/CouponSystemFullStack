@@ -19,7 +19,7 @@ public class CouponsExpirationDailyJob {
 	private CouponsRepository couponsRepository;
 	
 	
-	@Scheduled(fixedRate=(5000), initialDelay = 1000) // 1000*60*60*24 millis(1000)*seconds(60)*minutes(60)*hours(24)*days=one day
+	@Scheduled(fixedRate=(1000*60*60*24), initialDelay = 1000) //  millis(1000)*seconds(60)*minutes(60)*hours(24)*days=one day
 	public void job() {
 			
 		System.err.println("Daily job start");
