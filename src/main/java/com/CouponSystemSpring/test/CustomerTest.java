@@ -8,10 +8,10 @@ import org.springframework.stereotype.Controller;
 
 import com.CouponSystemSpring.entities.Category;
 import com.CouponSystemSpring.entities.Coupon;
-import com.CouponSystemSpring.exceptions.AllreadyExistInDBException;
+import com.CouponSystemSpring.exceptions.AlreadyExistInDBException;
 import com.CouponSystemSpring.exceptions.CanNotPurchaseException;
 import com.CouponSystemSpring.exceptions.DoesNotExistInDBException;
-import com.CouponSystemSpring.exceptions.InvaildInputException;
+import com.CouponSystemSpring.exceptions.InvalidInputException;
 import com.CouponSystemSpring.exceptions.LoginException;
 import com.CouponSystemSpring.services.ClientType;
 import com.CouponSystemSpring.services.CustomerService;
@@ -22,7 +22,7 @@ public class CustomerTest extends ClientTest {
 
 	// Customer Connection, Menu and function options
 	@Autowired
-	private CustomerService customerFacade;
+	private CustomerService customerService;
 
 	public CustomerTest() {
 		super();
@@ -30,7 +30,7 @@ public class CustomerTest extends ClientTest {
 	}
 	
 	private final String CUSTOMER_MENU_STR = "Customer Menu:\n" 
-									+ "1. Purches a coupon\n"
+									+ "1. Purchase a coupon\n"
 									+ "2. View all your coupons\n" 
 									+ "3. View all your coupons in one category\n"
 									+ "4. View all your coupons up to max price\n" 
@@ -43,11 +43,11 @@ public class CustomerTest extends ClientTest {
 		String email = scannerManager.getStr("Email:");
 		String password = scannerManager.getStr("Password:");
 
-		customerFacade = (CustomerService) loginManager.login(email, password, ClientType.CUSTOMER);
-		if (customerFacade == null) {
+		customerService = (CustomerService) loginManager.login(email, password, ClientType.CUSTOMER);
+		if (customerService == null) {
 			throw new LoginException();
 		} else {
-			System.out.println("Loggin Succeeded\n");
+			System.out.println("Login Succeeded\n");
 			setUserLogging(true);
 			while (isUserLogging()) {
 				try {
@@ -55,7 +55,7 @@ public class CustomerTest extends ClientTest {
 				} catch (InputMismatchException e) {
 					System.out.println("You need to enter a number from the list");
 					input.next();
-				} catch  (InvaildInputException | AllreadyExistInDBException | DoesNotExistInDBException | CanNotPurchaseException e) {
+				} catch  (InvalidInputException | AlreadyExistInDBException | DoesNotExistInDBException | CanNotPurchaseException e) {
 					System.out.println(e.getMessage());
 				}  finally {
 					System.out.print("\n");
@@ -66,11 +66,11 @@ public class CustomerTest extends ClientTest {
 	}
 
 	@Override
-	protected void menu() throws InvaildInputException, AllreadyExistInDBException, CanNotPurchaseException, DoesNotExistInDBException {
+	protected void menu() throws InvalidInputException, AlreadyExistInDBException, CanNotPurchaseException, DoesNotExistInDBException {
 		int numOption = scannerManager.getInt(CUSTOMER_MENU_STR);
 		switch (numOption) {
 		case 1:
-			purchesCoupon();
+			PurchaseCoupon();
 			break;
 		case 2:
 			viewAllCoupons();
@@ -86,21 +86,21 @@ public class CustomerTest extends ClientTest {
 			break;
 		case 6:
 			userLogging = false;
-			customerFacade = null;
+			customerService = null;
 			break;
 		default:
-			throw new InvaildInputException("" + numOption);
+			throw new InvalidInputException("" + numOption);
 
 		}
 	}
 
 	private void viewCustomerDetails() throws DoesNotExistInDBException {
 		
-			System.out.println("Your Details:\n"+customerFacade.getCustomerDetails());
+			System.out.println("Your Details:\n"+ customerService.getCustomerDetails());
 	} 
 	private void viewAllCouponsByMaxPrice() {
 		double maxPrice = scannerManager.getDouble("Enter coupons maximum price ");
-		List <Coupon> coupons=customerFacade.getCustomerCoupons(maxPrice);
+		List <Coupon> coupons= customerService.getCustomerCoupons(maxPrice);
 		if (!coupons.isEmpty()) {
 			System.out.println("All coupons until "+maxPrice+":\n"+coupons);
 		}
@@ -110,7 +110,7 @@ public class CustomerTest extends ClientTest {
 	}
 	private void viewAllCouponsByCategory()  {
 		Category category = scannerManager.getCategory();
-		List <Coupon> coupons=customerFacade.getCustomerCoupons(category);
+		List <Coupon> coupons= customerService.getCustomerCoupons(category);
 		if (!coupons.isEmpty()) {
 			System.out.println("All "+category+" coupons:\n"+coupons);
 		}
@@ -119,7 +119,7 @@ public class CustomerTest extends ClientTest {
 		}
 	}
 	private void viewAllCoupons() {
-		List <Coupon> coupons=customerFacade.getCustomerCoupons();
+		List <Coupon> coupons= customerService.getCustomerCoupons();
 		if (!coupons.isEmpty()) {
 			System.out.println("All company coupons:\n"+coupons);
 		}
@@ -127,15 +127,15 @@ public class CustomerTest extends ClientTest {
 			System.out.println("There is no coupons for this customer");
 		}		
 	}
-	private void purchesCoupon() {
+	private void PurchaseCoupon() {
 		int idCoupon=scannerManager.getInt("Enter the id coupon you want to purchase:");
 		try {
-			customerFacade.purchaseCoupon(idCoupon);
+			customerService.purchaseCoupon(idCoupon);
 			System.out.println("Enjoy your new coupon! ");
 		} catch (DoesNotExistInDBException e) {
-			System.out.println("This coupon doesn't exsits");
-		} catch (AllreadyExistInDBException e) {
-			System.out.println("You allready buy this coupon");
+			System.out.println("This coupon doesn't exits");
+		} catch (AlreadyExistInDBException e) {
+			System.out.println("You already buy this coupon");
 		} catch ( CanNotPurchaseException e) {
 			System.out.println(e.getMessage());
 		} 

@@ -6,10 +6,10 @@ import java.util.Scanner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
-import com.CouponSystemSpring.exceptions.AllreadyExistInDBException;
+import com.CouponSystemSpring.exceptions.AlreadyExistInDBException;
 import com.CouponSystemSpring.exceptions.CanNotPurchaseException;
 import com.CouponSystemSpring.exceptions.DoesNotExistInDBException;
-import com.CouponSystemSpring.exceptions.InvaildInputException;
+import com.CouponSystemSpring.exceptions.InvalidInputException;
 import com.CouponSystemSpring.exceptions.LoginException;
 import com.CouponSystemSpring.exceptions.UpdateException;
 import com.CouponSystemSpring.services.AbstractClientService;
@@ -36,8 +36,8 @@ public abstract class ClientTest {
 		this.userLogging = userLogging;
 	}
 	
-	public abstract void connection() throws SQLException, InterruptedException, LoginException, InvaildInputException, AllreadyExistInDBException, UpdateException, CanNotPurchaseException, DoesNotExistInDBException;
+	public abstract void connection() throws SQLException, InterruptedException, LoginException, InvalidInputException, AlreadyExistInDBException, UpdateException, CanNotPurchaseException, DoesNotExistInDBException;
 	
-	protected abstract void menu() throws InterruptedException, SQLException, AllreadyExistInDBException, DoesNotExistInDBException, InvaildInputException, UpdateException, CanNotPurchaseException;
+	protected abstract void menu() throws InterruptedException, SQLException, AlreadyExistInDBException, DoesNotExistInDBException, InvalidInputException, UpdateException, CanNotPurchaseException;
 
 }

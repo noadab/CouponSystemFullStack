@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import com.CouponSystemSpring.entities.Category;
 import com.CouponSystemSpring.entities.Coupon;
 import com.CouponSystemSpring.entities.Customer;
-import com.CouponSystemSpring.exceptions.AllreadyExistInDBException;
+import com.CouponSystemSpring.exceptions.AlreadyExistInDBException;
 import com.CouponSystemSpring.exceptions.CanNotPurchaseException;
 import com.CouponSystemSpring.exceptions.DoesNotExistInDBException;
 
@@ -36,7 +36,7 @@ public class CustomerService extends AbstractClientService{
 		return false;
 	}
 	
-	public void purchaseCoupon(int couponId) throws AllreadyExistInDBException, CanNotPurchaseException, DoesNotExistInDBException {
+	public void purchaseCoupon(int couponId) throws AlreadyExistInDBException, CanNotPurchaseException, DoesNotExistInDBException {
 		
 		Coupon coupon=couponsRepository.findOneCouponById(couponId);
 		
@@ -58,7 +58,7 @@ public class CustomerService extends AbstractClientService{
 		List<Coupon> coupons=getCustomerCoupons();
 		
 		if (coupons.contains(coupon)) {
-			throw new AllreadyExistInDBException("You allready buy this coupon");
+			throw new AlreadyExistInDBException("You allready buy this coupon");
 		}
 		
 		coupons.add(coupon);
@@ -98,7 +98,7 @@ public class CustomerService extends AbstractClientService{
 	}
 
 	public Customer getCustomerById(int id) {
-		return customersRepository.findOneCutomerById(id);
+		return customersRepository.findOneCustomerById(id);
 	}
 	
 	public Customer getCustomer() {

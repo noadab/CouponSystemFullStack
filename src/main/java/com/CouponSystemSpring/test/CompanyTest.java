@@ -10,9 +10,9 @@ import org.springframework.stereotype.Controller;
 
 import com.CouponSystemSpring.entities.Category;
 import com.CouponSystemSpring.entities.Coupon;
-import com.CouponSystemSpring.exceptions.AllreadyExistInDBException;
+import com.CouponSystemSpring.exceptions.AlreadyExistInDBException;
 import com.CouponSystemSpring.exceptions.DoesNotExistInDBException;
-import com.CouponSystemSpring.exceptions.InvaildInputException;
+import com.CouponSystemSpring.exceptions.InvalidInputException;
 import com.CouponSystemSpring.exceptions.LoginException;
 import com.CouponSystemSpring.exceptions.UpdateException;
 import com.CouponSystemSpring.services.ClientType;
@@ -24,7 +24,7 @@ public class CompanyTest extends ClientTest  {
 
 	// Company Connection, Menu and function options
 	@Autowired
-	private static CompanyService companyFacade;
+	private static CompanyService companyService;
 
 	public CompanyTest() {
 		super();
@@ -48,12 +48,12 @@ public class CompanyTest extends ClientTest  {
 		String email = scannerManager.getStr("Email:");
 		String password = scannerManager.getStr("Password:");
 		
-		companyFacade =(CompanyService)loginManager.login(email, password, ClientType.COMPANY);
-		if (companyFacade == null) {
+		companyService =(CompanyService)loginManager.login(email, password, ClientType.COMPANY);
+		if (companyService == null) {
 			throw new LoginException();
 		} else {
 			setUserLogging(true);
-			System.out.println("Loggin Succeeded\n");
+			System.out.println("Login Succeeded\n");
 			while (isUserLogging()) {
 				try {
 					menu();
@@ -61,7 +61,7 @@ public class CompanyTest extends ClientTest  {
 				catch (InputMismatchException e) {
 					System.out.println("You need to enter a number from the list");
 					input.next();
-				} catch  (InvaildInputException | AllreadyExistInDBException | DoesNotExistInDBException | UpdateException e) {
+				} catch  (InvalidInputException | AlreadyExistInDBException | DoesNotExistInDBException | UpdateException e) {
 					System.out.println(e.getMessage());
 				} finally {
 					System.out.print("\n");
@@ -73,7 +73,7 @@ public class CompanyTest extends ClientTest  {
 	}
 
 	@Override
-	protected void menu() throws InvaildInputException, AllreadyExistInDBException, UpdateException, DoesNotExistInDBException {
+	protected void menu() throws InvalidInputException, AlreadyExistInDBException, UpdateException, DoesNotExistInDBException {
 		int numOption=0;
 		try {
 			numOption= scannerManager.getInt(COMPANY_MENU_STR);
@@ -104,11 +104,11 @@ public class CompanyTest extends ClientTest  {
 				break;
 			case 8:
 				userLogging=false;
-				companyFacade=null;
+				companyService =null;
 				break;
 
 			default:
-				throw new InvaildInputException("" + numOption);
+				throw new InvalidInputException("" + numOption);
 				
 		}
 		
@@ -117,11 +117,11 @@ public class CompanyTest extends ClientTest  {
 	}
 	
 	private void viewCompanyDetails() throws DoesNotExistInDBException {
-		System.out.println("Your Details:\n"+companyFacade.getCompanyDetails());
+		System.out.println("Your Details:\n"+ companyService.getCompanyDetails());
 	}
 	private void viewAllCouponsByMaxPrice() {
 		double maxPrice=scannerManager.getDouble("Enter coupons maximum price ");
-		List <Coupon> coupons=companyFacade.getCompanyCoupons(maxPrice);
+		List <Coupon> coupons= companyService.getCompanyCoupons(maxPrice);
 		if (!coupons.isEmpty()) {
 			System.out.println("All coupons until "+maxPrice+":\n"+coupons);
 		}
@@ -133,7 +133,7 @@ public class CompanyTest extends ClientTest  {
 	private void viewAllCouponsByCategory()  {
 		
 		Category category = scannerManager.getCategory();
-		List <Coupon> coupons=companyFacade.getCompanyCoupons(category);
+		List <Coupon> coupons= companyService.getCompanyCoupons(category);
 		if (!coupons.isEmpty()) {
 			System.out.println("All "+category+" coupons:\n"+coupons);
 		}
@@ -143,7 +143,7 @@ public class CompanyTest extends ClientTest  {
 		
 	}
 	private void viewAllCoupons()  {
-		List <Coupon> coupons=companyFacade.getCompanyCoupons();
+		List <Coupon> coupons= companyService.getCompanyCoupons();
 		if (!coupons.isEmpty()) {
 			System.out.println("All company coupons:\n"+coupons);
 		}
@@ -155,7 +155,7 @@ public class CompanyTest extends ClientTest  {
 		
 		int id=scannerManager.getInt("Enter Coupon Id:");
 		try{
-			companyFacade.deleteCoupon(id);
+			companyService.deleteCoupon(id);
 			System.out.println("The coupon with id: "+id+ " was delete");
 		} catch (DoesNotExistInDBException e) {
 			System.out.println(e.getMessage());
@@ -165,7 +165,7 @@ public class CompanyTest extends ClientTest  {
 	private void updateCoupon() throws DoesNotExistInDBException{
 		
 		int idCoupon=scannerManager.getInt("Enter the coupon Id you want to update:");
-		Coupon currCoupon = companyFacade.getOneCoupon(idCoupon);
+		Coupon currCoupon = companyService.getOneCoupon(idCoupon);
 		boolean isUpdated=false;
 		
 		while (!isUpdated) {
@@ -177,74 +177,74 @@ public class CompanyTest extends ClientTest  {
 											+ "5. Coupon expired date\n"
 											+ "6. Amount of coupons\n"
 											+ "7. Coupon price\n"
-											+ "8. Image discription\n"
+											+ "8. Image description\n"
 											+ "9. Exit");
 			try {
 				switch (numOption) {
 				case 1:
 					Category category=scannerManager.getCategory();
 					currCoupon.setCategory(category);
-					companyFacade.updateCoupon(currCoupon);
+					companyService.updateCoupon(currCoupon);
 					isUpdated=true;
 					System.out.println("Category updated");
 					break;
 				case 2:
 					String title=scannerManager.getStr("Enter title");
 					currCoupon.setTitle(title);
-					companyFacade.updateCoupon(currCoupon);
+					companyService.updateCoupon(currCoupon);
 					isUpdated=true;
 					System.out.println("Description updated");
 					break;
 				case 3:
 					String description=scannerManager.getStr("Enter description");
 					currCoupon.setDescription(description);
-					companyFacade.updateCoupon(currCoupon);
+					companyService.updateCoupon(currCoupon);
 					isUpdated=true;
 					System.out.println("Description updated");
 					break;
 				case 4:
 					LocalDate startDate=scannerManager.getDate("Enter the date that coupon is available.");
 					currCoupon.setStartDate(startDate);
-					companyFacade.updateCoupon(currCoupon);
+					companyService.updateCoupon(currCoupon);
 					isUpdated=true;
 					System.out.println("Available coupon date updated");
 					break;
 				case 5:
 					LocalDate endDate=scannerManager.getDate("Enter the date that coupon is expired. ");
 					currCoupon.setStartDate(endDate);
-					companyFacade.updateCoupon(currCoupon);
+					companyService.updateCoupon(currCoupon);
 					isUpdated=true;
 					System.out.println("Expired coupon date updated");
 					break;
 				case 6:
 					int amount=scannerManager.getInt("Enter amount of coupons that is availbale");
 					currCoupon.setAmount(amount);
-					companyFacade.updateCoupon(currCoupon);
+					companyService.updateCoupon(currCoupon);
 					isUpdated=true;
 					System.out.println("Amount of coupons updated");
 					break;
 				case 7:
 					double price=scannerManager.getDouble("Enter coupon price:");
 					currCoupon.setPrice(price);
-					companyFacade.updateCoupon(currCoupon);
+					companyService.updateCoupon(currCoupon);
 					isUpdated=true;
 					System.out.println("Coupon price updated");
 					break;
 				case 8:
-					String image=scannerManager.getStr("Enter image discription:");
+					String image=scannerManager.getStr("Enter image description:");
 					currCoupon.setImage(image);
-					companyFacade.updateCoupon(currCoupon);
+					companyService.updateCoupon(currCoupon);
 					isUpdated=true;
-					System.out.println("Image discription updated");
+					System.out.println("Image description updated");
 					break;
 				case 9:
 					isUpdated=true;
 					break;
 				default:
-					throw new InvaildInputException("" + numOption);
+					throw new InvalidInputException("" + numOption);
 				}
 				isUpdated=true;
-			} catch (InvaildInputException | DoesNotExistInDBException| UpdateException e) {
+			} catch (InvalidInputException | DoesNotExistInDBException| UpdateException e) {
 				System.out.println(e.getMessage());
 			}
 		}
@@ -255,9 +255,9 @@ public class CompanyTest extends ClientTest  {
 	
 		try {
 			Coupon coupon= scannerManager.getCouponDetails();
-			companyFacade.addCoupon(coupon);
+			companyService.addCoupon(coupon);
 			System.out.println("The coupon add to system");
-		} catch (AllreadyExistInDBException | InvaildInputException e) {
+		} catch (AlreadyExistInDBException | InvalidInputException e) {
 			System.out.println(e.getMessage());
 		}
 		

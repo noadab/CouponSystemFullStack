@@ -13,7 +13,7 @@ import com.CouponSystemSpring.entities.Customer;
 @Repository
 public interface CustomersRepository extends JpaRepository <Customer, Integer> {
 	
-	public default Customer findOneCutomerById(int customerId) {
+	public default Customer findOneCustomerById(int customerId) {
 		return findById(customerId).iterator().next();
 		
 	}

@@ -1,6 +1,6 @@
 package com.CouponSystemSpring.exceptions;
 
-public class AllreadyExistInDBException extends Exception {
+public class AlreadyExistInDBException extends Exception {
 
 	/**
 	 * 
@@ -9,12 +9,11 @@ public class AllreadyExistInDBException extends Exception {
 	private static final long serialVersionUID = 1L;
 	private String message;
 	
-	public AllreadyExistInDBException() {
+	public AlreadyExistInDBException() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
-	public AllreadyExistInDBException(String message) {
+	public AlreadyExistInDBException(String message) {
 		super();
 		this.message= message;
 	} 
@@ -25,7 +24,7 @@ public class AllreadyExistInDBException extends Exception {
 			return message;
 		}
 		
-		return "This Object allready exist- Doesn't add to system";	
+		return "This Object already exist- Doesn't add to system";
 	}
 	
 }

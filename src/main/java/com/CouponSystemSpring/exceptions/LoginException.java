@@ -9,7 +9,6 @@ public class LoginException extends Exception{
 
 	public LoginException() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override

@@ -7,13 +7,13 @@ import java.util.Scanner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
-import com.CouponSystemSpring.exceptions.AllreadyExistInDBException;
+import com.CouponSystemSpring.exceptions.AlreadyExistInDBException;
 import com.CouponSystemSpring.exceptions.CanNotPurchaseException;
 import com.CouponSystemSpring.exceptions.DoesNotExistInDBException;
-import com.CouponSystemSpring.exceptions.InvaildInputException;
+import com.CouponSystemSpring.exceptions.InvalidInputException;
 import com.CouponSystemSpring.exceptions.LoginException;
 import com.CouponSystemSpring.exceptions.UpdateException;
-import com.CouponSystemSpring.job.SchedualJob;
+import com.CouponSystemSpring.job.ScheduledDailyJob;
 
 
 @Controller
@@ -22,7 +22,7 @@ public class Test {
 	private Scanner input=new Scanner(System.in);
 
 	@Autowired
-	private SchedualJob schedualJob;
+	private ScheduledDailyJob scheduledDailyJob;
 
 	private boolean connectProgram = true;
 	private int numOption;
@@ -34,7 +34,7 @@ public class Test {
 	@Autowired
 	private CustomerTest customerTest;
 
-	private final String MAIN_MENU_STR = "choose from main num of opertion:\n"
+	private final String MAIN_MENU_STR = "choose from main num of operation:\n"
 										 + "1. Connection as Admin\n"
 										 + "2. Connection as Company\n" 
 										 + "3. Connection as Customer\n"
@@ -52,7 +52,7 @@ public class Test {
 			} catch(InputMismatchException e) {
 				System.out.println("You need to enter a number from the list\n");
 				input.next();
-			} catch (LoginException | InvaildInputException | AllreadyExistInDBException | DoesNotExistInDBException | UpdateException |CanNotPurchaseException e) {
+			} catch (LoginException | InvalidInputException | AlreadyExistInDBException | DoesNotExistInDBException | UpdateException |CanNotPurchaseException e) {
 				System.out.println(e.getMessage()+"\n");
 			} catch (SQLException   e) {
 				System.out.println("SQL exception\n");
@@ -63,7 +63,7 @@ public class Test {
 	}
 
 	private void mainMenu()
-			throws SQLException, InterruptedException, LoginException, InputMismatchException, InvaildInputException, AllreadyExistInDBException, DoesNotExistInDBException, UpdateException, CanNotPurchaseException {
+			throws SQLException, InterruptedException, LoginException, InputMismatchException, InvalidInputException, AlreadyExistInDBException, DoesNotExistInDBException, UpdateException, CanNotPurchaseException {
 
 		
 		System.out.println(MAIN_MENU_STR);
@@ -88,7 +88,7 @@ public class Test {
 			exit();
 			break;
 		default:
-			throw new InvaildInputException("" + numOption);
+			throw new InvalidInputException("" + numOption);
 
 		}
 	
@@ -101,14 +101,14 @@ public class Test {
 	}
 
 	private void startDailyJob() {
-		schedualJob.startSchedule();
+		scheduledDailyJob.startSchedule();
 		
 		
 	}
 	
 
 	private void stopDailyJob() {
-		schedualJob.stopSchedule();
+		scheduledDailyJob.stopSchedule();
 	}
 
 

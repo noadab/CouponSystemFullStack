@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import com.CouponSystemSpring.entities.Category;
 import com.CouponSystemSpring.entities.Company;
 import com.CouponSystemSpring.entities.Coupon;
-import com.CouponSystemSpring.exceptions.AllreadyExistInDBException;
+import com.CouponSystemSpring.exceptions.AlreadyExistInDBException;
 import com.CouponSystemSpring.exceptions.DoesNotExistInDBException;
 import com.CouponSystemSpring.exceptions.UpdateException;
 
@@ -32,10 +32,10 @@ public class CompanyService extends AbstractClientService {
 		return false;
 	}
 
-	public void addCoupon(Coupon coupon) throws AllreadyExistInDBException {
+	public void addCoupon(Coupon coupon) throws AlreadyExistInDBException {
 
 		if (couponsRepository.existsByTitle(coupon.getTitle())) {
-			throw new AllreadyExistInDBException("This coupon allready exists");
+			throw new AlreadyExistInDBException("This coupon already exists");
 		}
 
 		coupon.setCompany(company);

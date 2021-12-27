@@ -2,7 +2,7 @@ package com.CouponSystemSpring.services;
 
 public enum ClientType {
 	
-	ADMINISTOR("Administor"), 
+	ADMINISTRATOR("ADMINISTRATOR"),
 	COMPANY("Company"), 
 	CUSTOMER("Customer");
 	

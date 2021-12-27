@@ -10,7 +10,6 @@ public class DoesNotExistInDBException extends Exception{
 	
 	public DoesNotExistInDBException() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 	
 	public DoesNotExistInDBException(String message) {

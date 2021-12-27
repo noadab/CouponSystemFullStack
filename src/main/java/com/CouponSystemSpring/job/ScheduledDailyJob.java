@@ -5,7 +5,7 @@ import org.springframework.scheduling.annotation.ScheduledAnnotationBeanPostProc
 import org.springframework.stereotype.Component;
 
 @Component
-public class SchedualJob {
+public class ScheduledDailyJob {
 
 	// Control activation and pause daily job thread
 	private static final String SCHEDULED_TASKS = "scheduledTasks";
@@ -19,21 +19,21 @@ public class SchedualJob {
 	public void stopSchedule(){
 		if(postProcessor.getScheduledTasks().size()==1) {
 			 postProcessor.postProcessBeforeDestruction(scheduledTasks, SCHEDULED_TASKS);
-			 System.err.println("SCHEDUAL DAILY JOB STOP RUNNING");
+			 System.err.println("SCHEDULED DAILY JOB STOP RUNNING");
 		}
 		else {
-			System.err.println("SCHEDUAL DAILY JOB DIDN'T RUNNING");
+			System.err.println("SCHEDULED DAILY JOB DIDN'T RUNNING");
 		}
 	   
 	}
 	
 	public void startSchedule(){
 		if(postProcessor.getScheduledTasks().size()==0) {
-			System.err.println("SCHEDUAL DAILY JOB START RUNNING");
+			System.err.println("SCHEDULED DAILY JOB START RUNNING");
 			postProcessor.postProcessAfterInitialization(scheduledTasks, SCHEDULED_TASKS);
 		}
 		else {
-			System.err.println("SCHEDUAL DAILY JOB ALLREADY RUNNING");
+			System.err.println("SCHEDULED DAILY JOB ALREADY RUNNING");
 		}
 	}
 	

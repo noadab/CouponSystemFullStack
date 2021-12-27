@@ -8,7 +8,7 @@ import com.CouponSystemSpring.entities.Company;
 import com.CouponSystemSpring.entities.Coupon;
 import com.CouponSystemSpring.entities.Customer;
 
-import com.CouponSystemSpring.exceptions.AllreadyExistInDBException;
+import com.CouponSystemSpring.exceptions.AlreadyExistInDBException;
 import com.CouponSystemSpring.exceptions.DoesNotExistInDBException;
 import com.CouponSystemSpring.exceptions.UpdateException;
 
@@ -32,16 +32,16 @@ public class AdminService extends AbstractClientService {
 		return false;
 	}
 
-	public void addCompany(Company company) throws AllreadyExistInDBException {
+	public void addCompany(Company company) throws AlreadyExistInDBException {
 
 		if ((companiesRepository.existsByEmailAndPassword(company.getEmail(), company.getPassword()))) {
-			throw new AllreadyExistInDBException();
+			throw new AlreadyExistInDBException();
 		}
 		if (companiesRepository.existsById(company.getId())) {
-			throw new AllreadyExistInDBException();
+			throw new AlreadyExistInDBException();
 		}
 		if (companiesRepository.existsByEmail(company.getEmail()) || companiesRepository.existsByName(company.getName())) {
-			throw new AllreadyExistInDBException();
+			throw new AlreadyExistInDBException();
 		}
 		
 		
@@ -102,13 +102,13 @@ public class AdminService extends AbstractClientService {
 		return currCompany;
 	}
 
-	public void addCustomer(Customer customer) throws AllreadyExistInDBException {
+	public void addCustomer(Customer customer) throws AlreadyExistInDBException {
 		
 		if (customersRepository.existsByEmail(customer.getEmail())) {
-			throw new AllreadyExistInDBException();
+			throw new AlreadyExistInDBException();
 		}
 		if (customersRepository.existsById(customer.getId())) {
-			throw new AllreadyExistInDBException();
+			throw new AlreadyExistInDBException();
 		}
 		
 		//??
@@ -134,7 +134,7 @@ public class AdminService extends AbstractClientService {
 			throw new DoesNotExistInDBException();
 		}
 		
-		Customer customer=customersRepository.findOneCutomerById(customerId);
+		Customer customer=customersRepository.findOneCustomerById(customerId);
 		
 		customersRepository.deleteById(customerId);
 		couponsRepository.deleteByCustomers(customer);
@@ -161,7 +161,7 @@ public class AdminService extends AbstractClientService {
 			throw new DoesNotExistInDBException();
 		}
 		
-		Customer customer=customersRepository.findOneCutomerById(customerId);
+		Customer customer=customersRepository.findOneCustomerById(customerId);
 		customer.setCoupons(couponsRepository.findByCustomers(customer));
 		return customer;
 	}	

@@ -10,7 +10,6 @@ public class UpdateException extends Exception {
 
 	public UpdateException(String message) {
 		this.message=message;
-		System.err.println();
 	}
 	
 	@Override

@@ -23,7 +23,7 @@ public class LoginManager {
 		AbstractClientService clientService = null;
 		
 		switch (clientType) {
-		case ADMINISTOR:
+		case ADMINISTRATOR:
 			clientService=adminService;
 			break;
 		case COMPANY:

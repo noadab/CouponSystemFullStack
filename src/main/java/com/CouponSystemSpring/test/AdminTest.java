@@ -8,9 +8,9 @@ import org.springframework.stereotype.Controller;
 
 import com.CouponSystemSpring.entities.Company;
 import com.CouponSystemSpring.entities.Customer;
-import com.CouponSystemSpring.exceptions.AllreadyExistInDBException;
+import com.CouponSystemSpring.exceptions.AlreadyExistInDBException;
 import com.CouponSystemSpring.exceptions.DoesNotExistInDBException;
-import com.CouponSystemSpring.exceptions.InvaildInputException;
+import com.CouponSystemSpring.exceptions.InvalidInputException;
 import com.CouponSystemSpring.exceptions.LoginException;
 import com.CouponSystemSpring.exceptions.UpdateException;
 import com.CouponSystemSpring.services.AdminService;
@@ -23,7 +23,7 @@ public class AdminTest extends ClientTest{
 	// Administration Connection, Menu and function options
 	
 	@Autowired
-	AdminService adminFacade;
+	AdminService adminService;
 	
 	public AdminTest() {
 		super();
@@ -49,19 +49,19 @@ public class AdminTest extends ClientTest{
 		String email = scannerManager.getStr("Email:");
 		String password = scannerManager.getStr("Password:");
 		
-		adminFacade=(AdminService) loginManager.login(email, password, ClientType.ADMINISTOR);
-		if (adminFacade==null) {
+		adminService =(AdminService) loginManager.login(email, password, ClientType.ADMINISTRATOR);
+		if (adminService ==null) {
 			throw new LoginException();
 		} else {
 			setUserLogging(true);
-			System.out.println("Loggin Succeeded\n");
+			System.out.println("Login Succeeded\n");
 			while (isUserLogging()) {
 				try {
 					menu();
 				} catch (InputMismatchException e) {
 					System.out.println("You need to enter a number from the list");
 					input.next();
-				} catch (DoesNotExistInDBException | InvaildInputException e) {
+				} catch (DoesNotExistInDBException | InvalidInputException e) {
 					System.out.println(e.getMessage());
 				} finally {
 					System.out.print("\n");
@@ -71,7 +71,7 @@ public class AdminTest extends ClientTest{
 	}
 	
 	@Override
-	protected void menu() throws DoesNotExistInDBException, InvaildInputException {
+	protected void menu() throws DoesNotExistInDBException, InvalidInputException {
 		int numOption=0;
 		try {
 			numOption= scannerManager.getInt(ADMIN_MENU_STR);
@@ -112,10 +112,10 @@ public class AdminTest extends ClientTest{
 				break;
 			case 11:
 				setUserLogging(false);
-				adminFacade=null;
+				adminService =null;
 				break;
 			default:
-				throw new InvaildInputException("" + numOption);
+				throw new InvalidInputException("" + numOption);
 				
 		}
 	}
@@ -123,7 +123,7 @@ public class AdminTest extends ClientTest{
 	private void viewCustomerById() {
 		int id=scannerManager.getInt("Enter the customer Id");
 		try {
-			Customer currCustomer = adminFacade.getOneCustomer(id);
+			Customer currCustomer = adminService.getOneCustomer(id);
 			System.out.println(currCustomer);
 		} catch (DoesNotExistInDBException e) {
 			System.out.println("This customer doesn't exists.");
@@ -133,7 +133,7 @@ public class AdminTest extends ClientTest{
 	}
 	private void viewAllCustomer() {
 		try {
-			List<Customer> allCustomers=adminFacade.getAllCustomers();
+			List<Customer> allCustomers= adminService.getAllCustomers();
 			System.out.println(allCustomers);
 		} catch (DoesNotExistInDBException e) {
 			System.out.println("There is no customers exists in system.");
@@ -145,7 +145,7 @@ public class AdminTest extends ClientTest{
 		int id = scannerManager.getInt("Enter customer Id:");
 		 
 		try{
-			adminFacade.deleteCustomer(id);
+			adminService.deleteCustomer(id);
 			System.out.println("The customer with id: "+id+ " was delete");
 		} catch (DoesNotExistInDBException e) {
 			System.out.println(e.getMessage());
@@ -155,7 +155,7 @@ public class AdminTest extends ClientTest{
 	private void updateCustomer() throws DoesNotExistInDBException  {
 		
 		int idCustomer=scannerManager.getInt("Enter the customer Id you want to update:");
-		Customer currCustomer= adminFacade.getOneCustomer(idCustomer);
+		Customer currCustomer= adminService.getOneCustomer(idCustomer);
 		boolean isUpdated=false;
 		
 		while (!isUpdated) {
@@ -170,28 +170,28 @@ public class AdminTest extends ClientTest{
 					case 1:
 						String newFirstName=scannerManager.getStr("Enter new first name:");
 						currCustomer.setFirstName(newFirstName);
-						adminFacade.updateCustomer(currCustomer);
+						adminService.updateCustomer(currCustomer);
 						isUpdated=true;
 						System.out.println("First name update");
 						break;
 					case 2:
 						String newlastName=scannerManager.getStr("Enter new last name:");
 						currCustomer.setLastName(newlastName);
-						adminFacade.updateCustomer(currCustomer);
+						adminService.updateCustomer(currCustomer);
 						isUpdated=true;
 						System.out.println("Last name update");
 						break;
 					case 3:
 						String newEmail=scannerManager.getStr("Enter new email:");
 						currCustomer.setEmail(newEmail);
-						adminFacade.updateCustomer(currCustomer);
+						adminService.updateCustomer(currCustomer);
 						isUpdated=true;
 						System.out.println("Email update");
 						break;
 					case 4:
 						String newPassword=scannerManager.getStr("Enter new password:");
 						currCustomer.setPassword(newPassword);
-						adminFacade.updateCustomer(currCustomer);
+						adminService.updateCustomer(currCustomer);
 						isUpdated=true;
 						System.out.println("Password update");
 						break;
@@ -199,9 +199,9 @@ public class AdminTest extends ClientTest{
 						isUpdated=true;
 						break;
 					default:
-						throw new InvaildInputException("" + numOption);
+						throw new InvalidInputException("" + numOption);
 					}
-			} catch ( DoesNotExistInDBException | InvaildInputException e) {
+			} catch ( DoesNotExistInDBException | InvalidInputException e) {
 				System.out.println(e.getMessage());
 			}
 			}
@@ -211,9 +211,9 @@ public class AdminTest extends ClientTest{
 		System.out.println("Enter new customer details:");
 		Customer newCustomer= scannerManager.getCustomerDetails("customer");
 		try {
-			adminFacade.addCustomer(newCustomer);
+			adminService.addCustomer(newCustomer);
 			System.out.println("The customer added to system");
-		} catch (AllreadyExistInDBException e) {
+		} catch (AlreadyExistInDBException e) {
 			System.out.println(e.getMessage());
 		}
 		
@@ -221,7 +221,7 @@ public class AdminTest extends ClientTest{
 	private void viewCompanyById() {
 		int id=scannerManager.getInt("Enter the company Id");
 		try {
-			Company currCompany= adminFacade.getOneCompany(id);
+			Company currCompany= adminService.getOneCompany(id);
 			System.out.println(currCompany);
 		} catch (DoesNotExistInDBException e) {
 			System.out.println("This company doesn't exists.");
@@ -230,7 +230,7 @@ public class AdminTest extends ClientTest{
 	private void viewAllCompanies(){
 		
 		try {
-			List <Company> allCompanies=adminFacade.getAllCompanies();
+			List <Company> allCompanies= adminService.getAllCompanies();
 			System.out.println(allCompanies);
 		} catch (DoesNotExistInDBException e) {
 			System.out.println("There is no companies exists in system.");
@@ -241,7 +241,7 @@ public class AdminTest extends ClientTest{
 	private void deleteCompany() {
 		int id=scannerManager.getInt("Enter company Id");
 		try{
-			adminFacade.deleteCompany(id);
+			adminService.deleteCompany(id);
 			System.out.println("The company with id "+id+ " was delete");
 		} catch (DoesNotExistInDBException e) {
 			System.out.println(e.getMessage());
@@ -251,7 +251,7 @@ public class AdminTest extends ClientTest{
 	private void updateCompany() throws DoesNotExistInDBException {
 
 		int idCompany=scannerManager.getInt("Enter the company Id you want to update:");
-		Company currCompany= adminFacade.getOneCompany(idCompany);
+		Company currCompany= adminService.getOneCompany(idCompany);
 		boolean isUpdated=false;
 		
 		while (!isUpdated) {
@@ -264,14 +264,14 @@ public class AdminTest extends ClientTest{
 				case 1:
 					String newEmail=scannerManager.getStr("Enter new email:");
 					currCompany.setEmail(newEmail);
-					adminFacade.updateCompany(currCompany);
+					adminService.updateCompany(currCompany);
 					isUpdated=true;
 					System.out.println("Email update");
 					break;
 				case 2:
 					String newPassword=scannerManager.getStr("Enter new password:");
 					currCompany.setPassword(newPassword);
-					adminFacade.updateCompany(currCompany);
+					adminService.updateCompany(currCompany);
 					isUpdated=true;
 					System.out.println("Password update");
 					break;
@@ -279,9 +279,9 @@ public class AdminTest extends ClientTest{
 					isUpdated=true;
 					break;
 				default:
-					throw new InvaildInputException("" + numOption);
+					throw new InvalidInputException("" + numOption);
 				}
-			} catch ( UpdateException | DoesNotExistInDBException | InvaildInputException e) {
+			} catch ( UpdateException | DoesNotExistInDBException | InvalidInputException e) {
 				System.out.println(e.getMessage());
 			}
 		}
@@ -291,11 +291,11 @@ public class AdminTest extends ClientTest{
 	}
 	private void addCompany() {
 		System.out.println("Enter new company details:");
-		Company newComapny= scannerManager.getCompanyDetails("company");
+		Company newCompany= scannerManager.getCompanyDetails("company");
 		try {
-			adminFacade.addCompany(newComapny);
+			adminService.addCompany(newCompany);
 			System.out.println("The company added to system");
-		} catch (AllreadyExistInDBException e) {
+		} catch (AlreadyExistInDBException e) {
 			System.out.println(e.getMessage());
 		}
 	}

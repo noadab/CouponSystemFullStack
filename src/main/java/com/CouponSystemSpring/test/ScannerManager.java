@@ -12,14 +12,14 @@ import com.CouponSystemSpring.entities.Category;
 import com.CouponSystemSpring.entities.Company;
 import com.CouponSystemSpring.entities.Coupon;
 import com.CouponSystemSpring.entities.Customer;
-import com.CouponSystemSpring.exceptions.InvaildInputException;
+import com.CouponSystemSpring.exceptions.InvalidInputException;
 
 
 
 @Controller
 public class ScannerManager {
 
-	// Get the input from the client and check if is valid 
+	// Get the inputs from the client and check if is valid
 	private Scanner input ;
 
 	final private int maxYear=2050;
@@ -33,11 +33,11 @@ public class ScannerManager {
 		input = new Scanner(System.in);
 	}
 	
-	public Customer getCustomerDetails(String massege) {
-		String firstName= getStr("Enter "+massege+" first name: ");
-		String lastName= getStr("Enter "+massege+" last name: ");
-		String email= getStr ("Enter "+massege+" email: ");
-		String password= getStr("Enter "+massege+" password: ");
+	public Customer getCustomerDetails(String massage) {
+		String firstName= getStr("Enter "+massage+" first name: ");
+		String lastName= getStr("Enter "+massage+" last name: ");
+		String email= getStr ("Enter "+massage+" email: ");
+		String password= getStr("Enter "+massage+" password: ");
 	
 		List<Coupon> coupons = new ArrayList<>();
 		
@@ -52,10 +52,10 @@ public class ScannerManager {
 	
 	}
 	
-	public Company getCompanyDetails(String massege) throws InputMismatchException{
-		String name=getStr("Enter "+massege+" Name:");
-		String email=getStr("Enter "+massege+" Email:");
-		String password=getStr("Enter "+massege+" password:");
+	public Company getCompanyDetails(String massage) throws InputMismatchException{
+		String name=getStr("Enter "+massage+" Name:");
+		String email=getStr("Enter "+massage+" Email:");
+		String password=getStr("Enter "+massage+" password:");
 		
 		Company currCompany= new Company();
 		currCompany.setName(name);
@@ -66,7 +66,7 @@ public class ScannerManager {
 		
 	}
 
-	public Coupon getCouponDetails() throws InvaildInputException {
+	public Coupon getCouponDetails() throws InvalidInputException {
 
 		Category category=getCategory();
 		String title=getStr("Enter coupon title:");
@@ -75,7 +75,7 @@ public class ScannerManager {
 		LocalDate endDate=getDate("Enter the date that coupon is expired.");
 		int amount=getInt("Enter amount of coupons that is availbale");
 		double price=getDouble("Enter coupon price:");
-		String image=getStr("Enter image discription:");
+		String image=getStr("Enter image description:");
 			
 		Coupon currCoupon=new Coupon();
 		currCoupon.setCategory(category);
@@ -97,7 +97,7 @@ public class ScannerManager {
 				System.out.println(msg);
 				num=input.nextInt();
 			} catch (InputMismatchException e) {
-				System.out.println("Invaild input, Enter again..");
+				System.out.println("Invalid input, Enter again..");
 				input.next();
 			} 
 		}
@@ -111,7 +111,7 @@ public class ScannerManager {
 				System.out.println(msg);
 				num=input.nextDouble();
 			} catch (InputMismatchException e) {
-				System.out.println("Invaild input, Enter again..");
+				System.out.println("Invalid input, Enter again..");
 				input.next();
 			} 
 		}
@@ -125,7 +125,7 @@ public class ScannerManager {
 				System.out.println(msg);
 				Str=input.next();
 			} catch (InputMismatchException e) {
-				System.out.println("Invaild input, Enter again..");
+				System.out.println("Invalid input, Enter again..");
 				input.next();
 			} 
 		}
@@ -140,9 +140,9 @@ public class ScannerManager {
 				Category.printAllCategory();
 				categorySrt=getStr("");
 				if (!Category.isItCategory(categorySrt)){
-					throw new InvaildInputException(categorySrt);
+					throw new InvalidInputException(categorySrt);
 				}
-			} catch (InvaildInputException e) {
+			} catch (InvalidInputException e) {
 				System.out.println(e.getMessage());
 			}
 		}
