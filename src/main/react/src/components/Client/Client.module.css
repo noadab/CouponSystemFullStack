@@ -1,0 +1,84 @@
+.client {
+  margin: 1.5rem;
+  margin-bottom: 0.5rem;
+  padding: 10px;
+  background-color: #d0aef7;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+  color: white;
+  border: 5px rgb(248, 248, 248); /* Dotted border */
+  width: 25rem;
+  max-width: 25rem;
+  height: 22rem auto;
+  border-radius: 8px;
+}
+.client-card {
+  padding: 2rem;
+  background-color: #785a96;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+  color: white;
+  border: 5px rgb(248, 248, 248); 
+  margin-bottom: 0.5rem;
+}
+
+.client-form{
+  margin: 0.5rem;
+  padding: 2rem;
+  background-color: #785a96;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+  color: white;
+  border: 5px rgb(248, 248, 248); 
+  width: 25rem,auto;
+  max-width: 25rem;
+  height: 22rem auto;
+  border-radius: 8px;
+}
+
+button {
+    font: inherit;
+    cursor: pointer;
+    background: #512688;
+    border: 1px solid #512688;
+    color: white;
+    padding: 0.75rem 2rem;
+    border-radius: 20px;
+    margin:0.3rem;
+    margin-top:1rem
+    
+  }
+
+.client h3 {
+  
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.client label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 0.1rem;
+  margin-top: 0.3rem;
+  text-align: left;
+  color: rgb(228, 220, 199);
+}
+
+.client-form, label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 0.1rem;
+  margin-top: 0.3rem;
+  text-align: left;
+  color: rgb(228, 220, 199);
+}
+
+
+.client-form input {
+  display: block;
+  width: 90%;
+  font: inherit;
+  padding: 0.2rem;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+}
+
+
+

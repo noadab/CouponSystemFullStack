@@ -1,0 +1,44 @@
+  .coupons-filter {
+    color: rgb(15, 15, 15);
+    margin: 1rem 0;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+    justify-content: space-around;
+    
+  }
+  .coupons-filter-box {
+    padding: 1 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+ 
+  .coupons-filter label {
+    margin-left: 0.5rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+  }
+  .coupons-filter button {
+    width: 125px;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+  }
+  
+  .coupons-filter #select {
+    width: 250px;
+    font: inherit;
+    border-radius: 6px;
+    border-color: black;
+  }
+  .coupons-filter input {
+    width: 250px;
+    font: inherit;
+    padding: 0.5rem 1.3rem;
+    border-radius: 6px;
+    border-color: black;
+   
+  }
+
