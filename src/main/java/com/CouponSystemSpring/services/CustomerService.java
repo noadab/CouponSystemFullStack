@@ -60,34 +60,44 @@ public class CustomerService extends AbstractClientService{
 		if (coupons.contains(coupon)) {
 			throw new AlreadyExistInDBException("You allready buy this coupon");
 		}
-		
-		coupons.add(coupon);
-		customer.setCoupons(coupons);
-		
 		List <Customer> customers=customersRepository.findByCoupons(coupon);
-		customers.add(customer);
-		coupon.setCustomers(customers);
+
 		coupon.setAmount(coupon.getAmount()-1);
+		customers.add(customer);
+		coupons.add(coupon);
+		
+		coupon.setCustomers(customers);
+		customer.setCoupons(coupons);
 		
 		couponsRepository.save(coupon);
 		customersRepository.save(customer);
 	}
 
-	public List<Coupon> getCustomerCoupons() {
-
+	public List<Coupon> getCustomerCoupons() throws DoesNotExistInDBException {
+		List<Coupon> customerCoupons = couponsRepository.findByCustomers(customer);
+		if(customerCoupons.isEmpty()) {
+			throw new DoesNotExistInDBException("There is no coupons for this customer");
+		}
 		return couponsRepository.findByCustomers(customer);
 		
 	}
 	
-	public List<Coupon> getCustomerCoupons(Category category) {
-		
-		return couponsRepository.findByCustomersAndCategory(customer, category);
+	public List<Coupon> getCustomerCoupons(Category category) throws DoesNotExistInDBException {
+		List<Coupon> customerCoupons = couponsRepository.findByCustomersAndCategory(customer, category);
+		if(customerCoupons.isEmpty()) {
+			throw new DoesNotExistInDBException("There is no coupons in " + category + " category for this customer");
+		}
+		return customerCoupons;
+
 
 	}
 	
-	public List<Coupon> getCustomerCoupons(double maxPrice) {
-	
-		return couponsRepository.findByCustomersAndPriceLessThan(customer,maxPrice);
+	public List<Coupon> getCustomerCoupons(double maxPrice) throws DoesNotExistInDBException {
+		List<Coupon> customerCoupons = couponsRepository.findByCustomersAndPriceLessThan(customer, maxPrice);
+		if(customerCoupons.isEmpty()) {
+			throw new DoesNotExistInDBException("There is no coupons cheaper than " + maxPrice + " for this customer");
+		}
+		return customerCoupons;
 
 		
 	}

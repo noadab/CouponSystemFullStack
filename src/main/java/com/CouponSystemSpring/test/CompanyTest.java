@@ -119,37 +119,42 @@ public class CompanyTest extends ClientTest  {
 	private void viewCompanyDetails() throws DoesNotExistInDBException {
 		System.out.println("Your Details:\n"+ companyService.getCompanyDetails());
 	}
+	
 	private void viewAllCouponsByMaxPrice() {
 		double maxPrice=scannerManager.getDouble("Enter coupons maximum price ");
-		List <Coupon> coupons= companyService.getCompanyCoupons(maxPrice);
-		if (!coupons.isEmpty()) {
-			System.out.println("All coupons until "+maxPrice+":\n"+coupons);
-		}
-		else {
-			System.out.println("There is no coupons cheaper than "+maxPrice+" for this company");
+		List<Coupon> coupons;
+		try {
+			coupons = companyService.getCompanyCoupons(maxPrice);
+
+			System.out.println("All company coupons until "+maxPrice+"\n"+coupons);
+		} catch (DoesNotExistInDBException e) {
+			System.out.println(e.getMessage());
 		}
 		
 	}
 	private void viewAllCouponsByCategory()  {
 		
 		Category category = scannerManager.getCategory();
-		List <Coupon> coupons= companyService.getCompanyCoupons(category);
-		if (!coupons.isEmpty()) {
-			System.out.println("All "+category+" coupons:\n"+coupons);
+		List<Coupon> coupons;
+		try {
+			coupons = companyService.getCompanyCoupons(category);
+			System.out.println("All company coupons for category "+category+"\n"+coupons);
+		} catch (DoesNotExistInDBException e) {
+			System.out.println(e.getMessage());
 		}
-		else {
-			System.out.println("There is no coupons in "+category+" category for this company");
-		}
+		
+		
 		
 	}
 	private void viewAllCoupons()  {
-		List <Coupon> coupons= companyService.getCompanyCoupons();
-		if (!coupons.isEmpty()) {
+		List<Coupon> coupons;
+		try {
+			coupons = companyService.getCompanyCoupons();
 			System.out.println("All company coupons:\n"+coupons);
+		} catch (DoesNotExistInDBException e) {
+			System.out.println(e.getMessage());
 		}
-		else {
-			System.out.println("There is no coupons for this company");
-		}
+		
 	}
 	private void deleteCoupon()  {
 		

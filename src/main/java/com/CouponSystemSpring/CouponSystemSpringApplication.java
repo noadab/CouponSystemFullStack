@@ -16,7 +16,13 @@ public class CouponSystemSpringApplication {
 
 		Test test=ctx.getBean(Test.class);
 		test.testAll();
-		ctx.close();	
+//		CustomerService customerService=ctx.getBean(CustomerService.class);
+//		customerService.setCustomer(customerService.getCustomerById(2));
+//		System.out.println(customerService.getCustomerCoupons().get(0).getCompany());
+		ctx.close();
+
+
+
 	}
 
 }

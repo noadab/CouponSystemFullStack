@@ -1,5 +1,8 @@
 package com.CouponSystemSpring.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,10 +31,12 @@ public class Coupon {
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
 	private int id;
 	@ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.MERGE,CascadeType.REFRESH})
-    @JoinColumn(name = "company_id")
+	@JsonIgnore
+	@JoinColumn(name = "company_id")
 	Company company=new Company();
 	@Column(name="category")
 	@Enumerated(EnumType.ORDINAL)
+	@JsonFormat(shape=JsonFormat.Shape.STRING)
 	private Category category;
 	@Column(name="title")
 	private String title;
@@ -51,7 +56,7 @@ public class Coupon {
 			   joinColumns = @JoinColumn(name ="coupons_id", referencedColumnName = "id"), 
 			inverseJoinColumns = @JoinColumn(name =  "customers_id" , referencedColumnName = "id"))
 	@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.MERGE,CascadeType.REFRESH})
-	//, mappedBy ="customers")
+	@JsonIgnore
 	private List<Customer> customers=new ArrayList<>();
 
 	

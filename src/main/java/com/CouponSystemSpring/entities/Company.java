@@ -14,6 +14,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "companies")
 public class Company {
@@ -28,6 +30,7 @@ public class Company {
 	@Column(name = "password")
 	private String password;
 	@OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.ALL }, mappedBy = "company")
+	@JsonIgnore
 	private List<Coupon> coupons = new ArrayList<>();
 
 	public Company() {

@@ -102,8 +102,6 @@ public class Test {
 
 	private void startDailyJob() {
 		scheduledDailyJob.startSchedule();
-		
-		
 	}
 	
 
@@ -111,9 +109,5 @@ public class Test {
 		scheduledDailyJob.stopSchedule();
 	}
 
-
-	public void setConnectProgram(boolean connectProgram) {
-		this.connectProgram = connectProgram;
-	}
 
 }

@@ -19,6 +19,14 @@ public class CompanyService extends AbstractClientService {
 	//Hold the login company
 	private Company company;
 
+	public Company getCompany() {
+		return company;
+	}
+
+	public void setCompany(Company company) {
+		this.company = company;
+	}
+
 	public CompanyService() {
 		super();
 	}
@@ -50,12 +58,21 @@ public class CompanyService extends AbstractClientService {
 		}
 
 		Coupon currCoupon = couponsRepository.findOneCouponById(coupon.getId());
-
+		
 		if (!coupon.getTitle().equals(currCoupon.getTitle())) {
 			throw new UpdateException("title");
 		}
+		currCoupon.setCategory(coupon.getCategory());
+		currCoupon.setDescription(coupon.getDescription());
+		currCoupon.setStartDate(coupon.getStartDate());
+		currCoupon.setStartDate(coupon.getEndDate());
+		currCoupon.setAmount(coupon.getAmount());
+		currCoupon.setPrice(coupon.getPrice());
+		currCoupon.setImage(coupon.getImage());
+		
+		
 
-		couponsRepository.save(coupon);
+		couponsRepository.save(currCoupon);
 
 	}
 
@@ -93,22 +110,31 @@ public class CompanyService extends AbstractClientService {
 	}
 
 
-	public List<Coupon> getCompanyCoupons() {
+	public List<Coupon> getCompanyCoupons() throws DoesNotExistInDBException {
 
 		List<Coupon> companyCoupons = couponsRepository.findByCompany(company);
+		if(companyCoupons.isEmpty()) {
+			throw new DoesNotExistInDBException("There is no coupons for this company");
+		}
 		return companyCoupons;
 
 	}
 
-	public List<Coupon> getCompanyCoupons(Category category) {
-
-		return couponsRepository.findByCompanyAndCategory(company, category);
+	public List<Coupon> getCompanyCoupons(Category category) throws DoesNotExistInDBException {
+		List<Coupon> companyCoupons = couponsRepository.findByCompanyAndCategory(company, category);
+		if(companyCoupons.isEmpty()) {
+			throw new DoesNotExistInDBException("There is no coupons in " + category + " category for this company");
+		}
+		return companyCoupons;
 
 	}
 
-	public List<Coupon> getCompanyCoupons(double maxPrice) {
-
-		return couponsRepository.findByCompanyAndPriceLessThan(company, maxPrice);
+	public List<Coupon> getCompanyCoupons(double maxPrice) throws DoesNotExistInDBException {
+		List<Coupon> companyCoupons = couponsRepository.findByCompanyAndPriceLessThan(company, maxPrice);
+		if(companyCoupons.isEmpty()) {
+			throw new DoesNotExistInDBException("There is no coupons cheaper than " + maxPrice + " for this company");
+		}
+		return companyCoupons;
 
 	}
 

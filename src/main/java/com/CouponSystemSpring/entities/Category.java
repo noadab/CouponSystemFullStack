@@ -1,5 +1,9 @@
 package com.CouponSystemSpring.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonValue;
+
+//@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum Category {
 
 		Food("Food"), 
@@ -13,6 +17,7 @@ public enum Category {
 			this.category=category;
 		}
 
+		@JsonValue
 		public String getCategory() {
 			return category;
 		}

@@ -17,7 +17,7 @@ public class AdminService extends AbstractClientService {
 	//Administration business logic
 	
 	private final String adminEmail = "admin@admin.com";
-	private final String adminPassword = "admin";
+	private final String adminPassword = "admin1234";
 
 	public AdminService() {
 		super();
@@ -60,6 +60,9 @@ public class AdminService extends AbstractClientService {
 			throw new UpdateException("name");
 		}
 		
+		currCompany.setEmail(company.getEmail());
+		currCompany.setPassword(company.getPassword());
+		
 		companiesRepository.save(company);
 
 	
@@ -78,13 +81,13 @@ public class AdminService extends AbstractClientService {
 
 		List <Company> allCompanies=companiesRepository.findAll();
 		
-		if (allCompanies==null) {
+		if (allCompanies.isEmpty()) {
 			throw new DoesNotExistInDBException();
 		}
 		
 		for (Company company : allCompanies) {
 			List<Coupon> couponsCompany = couponsRepository.findByCompany(company);
-			company.setCoupons(couponsCompany );
+			company.setCoupons(couponsCompany);
 		}
 		
 		return allCompanies;
@@ -125,7 +128,13 @@ public class AdminService extends AbstractClientService {
 			throw new DoesNotExistInDBException("The customer doesn't exist");
 		}
 		
-		customersRepository.save(customer);
+		Customer currCustomer = customersRepository.findOneCustomerById(customer.getId());
+		currCustomer.setFirstName(customer.getFirstName());
+		currCustomer.setLastName(customer.getLastName());
+		currCustomer.setEmail(customer.getEmail());
+		currCustomer.setPassword(customer.getPassword());
+		
+		customersRepository.save(currCustomer);
 	
 	}
 
@@ -144,7 +153,7 @@ public class AdminService extends AbstractClientService {
 		
 		List<Customer> allCustomers=customersRepository.findAll();
 		
-		if (allCustomers==null) {
+		if (allCustomers.isEmpty()) {
 			throw new DoesNotExistInDBException();
 		}
 		

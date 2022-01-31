@@ -30,8 +30,6 @@ public interface CouponsRepository extends JpaRepository<Coupon, Integer> {
 	public List <Coupon> findByCompany (Company company);
 	
 	public List <Coupon> findByCustomers (Customer customer) ;
-	
-	public List <Coupon> findByCustomersAndId (Customer customer, int couponId) ;
 
 	public List<Coupon> findByCompanyAndCategory(Company company, Category category);
 
