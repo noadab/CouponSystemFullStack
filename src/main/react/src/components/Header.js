@@ -25,7 +25,7 @@ const Header = () => {
             </NavLink>
           </li>
 
-          {isAuth && 
+          {isAuth && userType!="admin" &&
           <li>
             <NavLink activeClassName={classes.active} to="/dashboard">
               Dashboard

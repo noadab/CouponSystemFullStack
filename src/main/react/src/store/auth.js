@@ -21,9 +21,9 @@ const authSlice = createSlice({
       state.isAuthenticated= false;
       state.token= 0;
       state.userType= null;
-      localStorage.setItem('token', null);
-      localStorage.setItem('isLoggedIn', false);
-      localStorage.setItem('userType', null);
+      localStorage.removeItem('token');
+      localStorage.removeItem('isLoggedIn');
+      localStorage.removeItem('userType');
 
     },
     userTypeHandler (state, action) {

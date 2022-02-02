@@ -13,7 +13,7 @@ const Client = (props) => {
 
   const [client,setClient]= useState();
   const [error, setError] = useState(null);
-  const [availClient, setAvailClient] = useState(true);
+  const [isAvailClient, setAvailClient] = useState(true);
   const [edit, setEdit] = useState(false);
 
   let content = <div>cant show user details</div>
@@ -27,22 +27,19 @@ const Client = (props) => {
     }
   }
 
-
   const deleteClient = useCallback(async (event) => {
     event.preventDefault();
     setError(null);
     let method = "DELETE";
-    let path = "admin/delete/" + client.clientType + "/" + client.id;
+    let path = "admin/delete/" + props.clientType + "/" + props.id;
     try {
         const data = await fetchWrapper.delete(method, path, token, () => {
-        console.log("error");
+          console.log(data)
       })
-      console.log("client sent to server: " + path);
       setAvailClient(false);
      
-    } catch (error) {
-      setError(error.message);
-      console.log(error.message);
+    } catch (Error) {
+      
     }
   }, []);
 
@@ -51,8 +48,9 @@ const Client = (props) => {
       deleteClient(event);
     }
   }
+
   const updateChangeHandler = () => {
-    console.log()
+    console.log("aaaa")
     setEdit(true);
   }
 
@@ -66,8 +64,8 @@ const Client = (props) => {
   }
 
   if (edit) {
-    console.log(edit)
-    content = <ClientForm defaultData={client} requestClient={client.clientType} onCancel={onCancel} onSave={onSave} />
+    content = <ClientForm defaultData={props} requestClient={props.clientType} onCancel={onCancel} onSave={onSave} />
+  
   }
   
   if (error){
@@ -78,7 +76,7 @@ const Client = (props) => {
   
   return (
     <React.Fragment>
-      {availClient && <div className={classes.client}>
+      {isAvailClient && <div className={classes.client}>
         {content}
         {userType === "admin" && !edit && <button onClick={updateChangeHandler}>update</button>}
         {userType === "admin" && !edit && <button onClick={deleteChangeHandler}>delete</button>}

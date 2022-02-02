@@ -73,9 +73,10 @@ const ClientFetch = (props) => {
     }
     return (
         <div >
-            {content}
-            {!add && <button onClick={addClientHandler}>Add client</button>}
+              {!add && <button onClick={addClientHandler}>Add client</button>}
             {add && <ClientForm defaultData={false} requestClient={requestClient} onCancel={onCancel} onSave={onSave}/>}
+            {content}
+          
         </div>
     )
 

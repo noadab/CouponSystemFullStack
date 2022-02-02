@@ -23,7 +23,6 @@ function App() {
     const storedUser_Token_Information = localStorage.getItem('token');
     const storedUser_UserType_Information = localStorage.getItem('userType');
     if (storedUser_LoggedIn_Information === "true") {
-      console.log();
       dispatch(authActions.login(storedUser_Token_Information));
       dispatch(authActions.userTypeHandler(storedUser_UserType_Information));
     }

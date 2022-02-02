@@ -112,12 +112,10 @@ public class CustomerController {
 
 	@PutMapping("/purchasesCoupon")
 	public ResponseEntity<?> purchasesCoupon(@RequestBody Coupon coupon, @RequestHeader("token") String token) {
-		System.out.println("Got a call to purchase");
+		System.out.println("Got a call to purchase "+coupon);
 		if (simpleTokenManager.isTokenExist(token)) {
 			try {
-				System.out.println("before");
 				customerService.purchaseCoupon(coupon.getId());
-				System.out.println("after");
 				return new ResponseEntity<String>("Enjoy your new coupon! ", HttpStatus.OK);
 			} catch (AlreadyExistInDBException | CanNotPurchaseException | DoesNotExistInDBException e) {
 				return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);

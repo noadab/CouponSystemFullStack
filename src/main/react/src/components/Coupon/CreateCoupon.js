@@ -153,7 +153,7 @@ function CreateCoupon(props) {
         {imageLoadState === "URL" && <input type="url" id="image" ref={imageRef} required={required} />}
         {imageLoadState === "File" && <input type="file" id="image" ref={imageRef} required={required} />}
       </div>
-      <button>Add Coupon</button>
+      <button type="submit">Add Coupon</button>
     </form>
     </section>
   );

@@ -1,6 +1,7 @@
 package com.CouponSystemSpring.services;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -38,7 +39,9 @@ public class CustomerService extends AbstractClientService{
 	
 	public void purchaseCoupon(int couponId) throws AlreadyExistInDBException, CanNotPurchaseException, DoesNotExistInDBException {
 		
-		Coupon coupon=couponsRepository.findOneCouponById(couponId);
+		Coupon coupon;
+		coupon = couponsRepository.findOneCouponById(couponId);
+		
 		
 		if (coupon.equals(null)) {
 			throw new DoesNotExistInDBException("Coupon with id: "+couponId+" doesn't exist");
@@ -55,22 +58,23 @@ public class CustomerService extends AbstractClientService{
 			throw new CanNotPurchaseException("The coupon sold out.....sorry");
 		}
 		
-		List<Coupon> coupons=getCustomerCoupons();
+		List<Coupon> coupons = new ArrayList<>();
+		try {
+			coupons = getCustomerCoupons();
+			if (coupons.contains(coupon)) {
+				throw new AlreadyExistInDBException("You allready buy this coupon");
+			}
+		} catch (DoesNotExistInDBException e) {
+		}	
 		
-		if (coupons.contains(coupon)) {
-			throw new AlreadyExistInDBException("You allready buy this coupon");
-		}
 		List <Customer> customers=customersRepository.findByCoupons(coupon);
 
-		coupon.setAmount(coupon.getAmount()-1);
 		customers.add(customer);
-		coupons.add(coupon);
-		
 		coupon.setCustomers(customers);
-		customer.setCoupons(coupons);
+		coupon.setAmount(coupon.getAmount()-1);
 		
 		couponsRepository.save(coupon);
-		customersRepository.save(customer);
+		
 	}
 
 	public List<Coupon> getCustomerCoupons() throws DoesNotExistInDBException {

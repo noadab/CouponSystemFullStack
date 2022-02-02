@@ -29,29 +29,18 @@ const Coupon = (props) => {
   let viewCoupon = <CardCoupon card={coupon} />
 
   const deleteCoupon = useCallback(async (event) => {
-    event.preventDefault();
     
-    const requestOptions = {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-         token: token
-      },
-    };
-
+    event.preventDefault();
+    let method = "DELETE";
+    let path ="/company/delete/" + id;
     try {
-      const response = await fetch("/company/delete/" + id, requestOptions);
-      const text = await response.text();
-      if (!response.ok) {
-        window.alert(text);
-        //dispatch(authActions.logout());
-        throw new Error("Something went wrong!");
-      }
-      console.log("Response Okay!");
-      console.log(text);
+      const data = await fetchWrapper.delete(method, path, token, () => {
+      
+    })
       setAvailCoupon(false);
-
-    } catch (error) {
+    }
+    
+     catch (error) {
       console.log(error.message);
     }
   }, []);
@@ -68,20 +57,23 @@ const Coupon = (props) => {
       if (window.confirm("Do you wan't to buy this coupon?")) {
         onPurchase();
       }
-
+    }
+    else if(userType===null){
+      if (window.confirm("You can't purchase this coupon beacuse you are logout, do you wan't to login?")) {
+        history.push("/login");
+      }
     }
     else if ({isAuth}){
       alert( userType+" user can't purchase coupons")
     }
     else {
-      if (window.confirm("You can't purchase this coupon beacuse you are logout, do you wan't to login?")) {
-        history.push("/login");
-      }
+      
     }
   }
 
   const updateCouponChangeHandler = () => {
     setEdit(true)
+    
   }
 
   const onCancel = () => {
@@ -97,11 +89,11 @@ const Coupon = (props) => {
         let couponToSend = coupon;
         let method = "PUT"
         let path = userType + "/purchasesCoupon"
-
         try {
             const data = await fetchWrapper.fetch(method, path, couponToSend, token, () => {
                 console.log("error");
             })
+            alert("Enjoy your new coupon! ");
         } catch (error) {
             console.log(error.message);
         }
