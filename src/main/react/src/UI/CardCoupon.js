@@ -17,7 +17,8 @@ const CardCoupon = (props)=>{
             width="60%" height="70%" />
         </p>
         <h3>{props.card.price}₪</h3>
-        <h4 >Coupon available: {props.card.startDate} - {props.card.endDate}</h4>
+        <h4 >Coupon available: </h4>
+        <h4 >{props.card.startDate} - {props.card.endDate}</h4>
         <h4>Category: {props.card.category}</h4>
         <p>
           {userType === "company" &&

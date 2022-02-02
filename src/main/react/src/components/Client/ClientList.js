@@ -7,7 +7,6 @@ import classes from './ClientList.module.css'
 const ClientList = (props) => {
   return (
     <div className={classes['client-list']}>
-      <ul >
         {props.clients.map((c) => (
           <Client
             clientType={c.clientType}
@@ -19,7 +18,6 @@ const ClientList = (props) => {
             email={c.email}
           />
         ))}
-      </ul>
     </div>
   )
 }

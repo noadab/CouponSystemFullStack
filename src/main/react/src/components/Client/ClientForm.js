@@ -8,7 +8,7 @@ const ClientForm = (props) => {
 
     const userType = useSelector(state => state.auth.userType);
     const token = useSelector(state => state.auth.token);
-    
+
     const requestClient = props.requestClient;
     const emailRef = useRef("");
     const passwordRef = useRef("");
@@ -28,7 +28,7 @@ const ClientForm = (props) => {
         }
         if (requestClient === "customer") {
             clientToSend = {
-                firstName: firstNameRef.current.value ,
+                firstName: firstNameRef.current.value,
                 lastName: lastNameRef.current.value,
                 password: passwordRef.current.value,
                 email: emailRef.current.value,
@@ -40,31 +40,31 @@ const ClientForm = (props) => {
         let path;
         if (!props.defaultData) {
             method = "POST";
-            path = userType+"/add/" + requestClient
+            path = userType + "/add/" + requestClient
         }
         else {
             clientToSend = { id: props.defaultData.id, ...clientToSend }
             method = "PUT";
-            path = userType+"/update/" + requestClient
+            path = userType + "/update/" + requestClient
 
         }
         try {
-            const data = await fetchWrapper.fetch(method, path, clientToSend,token, () => {
+            const data = await fetchWrapper.fetch(method, path, clientToSend, token, () => {
                 console.log("error");
             })
             clientToSend = { clientType: props.defaultData.clientType, ...clientToSend }
             console.log(clientToSend)
             props.onSave(clientToSend);
             console.log("client sent to server: " + clientToSend);
-            console.log("Got Response: " + JSON.stringify(data));
-           
+
         } catch (error) {
             console.log(error.message);
         }
+
     })
-    
+
     const onCancel = () => {
-        if (window.confirm("are you sure you want to cancel?")) {
+        if (window.confirm("Are you sure you want to cancel?")) {
             props.onCancel();
         }
     }
@@ -78,7 +78,7 @@ const ClientForm = (props) => {
                     id="name"
                     ref={nameRef}
                     required={true}
-                    defaultValue={!props.defaultData? "":props.defaultData.name}
+                    defaultValue={!props.defaultData ? "" : props.defaultData.name}
                 />
             </div>}
             {requestClient === "customer" && <div >
@@ -88,7 +88,7 @@ const ClientForm = (props) => {
                     id="firstName"
                     ref={firstNameRef}
                     required={true}
-                    defaultValue={!props.defaultData? "":props.defaultData.firstName}
+                    defaultValue={!props.defaultData ? "" : props.defaultData.firstName}
                 />
             </div>}
             {requestClient === "customer" && <div >
@@ -98,7 +98,7 @@ const ClientForm = (props) => {
                     id="lastName"
                     ref={lastNameRef}
                     required={true}
-                    defaultValue={!props.defaultData? "":props.defaultData.lastName}
+                    defaultValue={!props.defaultData ? "" : props.defaultData.lastName}
 
                 />
             </div>}
@@ -108,8 +108,8 @@ const ClientForm = (props) => {
                 <input
                     type="email"
                     id="email"
-                    ref={emailRef}   
-                    defaultValue={!props.defaultData? "":props.defaultData.email}
+                    ref={emailRef}
+                    defaultValue={!props.defaultData ? "" : props.defaultData.email}
                 />
             </div>
             <div >
@@ -119,7 +119,7 @@ const ClientForm = (props) => {
                     id="password"
                     ref={passwordRef}
                     required={true}
-                    defaultValue={!props.defaultData? "":props.defaultData.password}
+                    defaultValue={!props.defaultData ? "" : props.defaultData.password}
                 />
             </div>
             <div>

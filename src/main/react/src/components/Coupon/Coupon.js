@@ -29,14 +29,11 @@ const Coupon = (props) => {
   let viewCoupon = <CardCoupon card={coupon} />
 
   const deleteCoupon = useCallback(async (event) => {
-    
     event.preventDefault();
     let method = "DELETE";
     let path ="/company/delete/" + id;
     try {
-      const data = await fetchWrapper.delete(method, path, token, () => {
-      
-    })
+      const data = await fetchWrapper.delete(method, path, token)
       setAvailCoupon(false);
     }
     
@@ -52,6 +49,21 @@ const Coupon = (props) => {
   }
 
 
+  
+
+  const updateCouponChangeHandler = () => {
+    setEdit(true)
+    
+  }
+
+  const onCancel = () => {
+    setEdit(false)
+  }
+
+  const onSave = (props)=>{
+    setEdit(false)
+    setCoupon(props)
+  }
   const purchaseCouponChangeHandler = () => {
     if (userType==="customer"){
       if (window.confirm("Do you wan't to buy this coupon?")) {
@@ -67,22 +79,10 @@ const Coupon = (props) => {
       alert( userType+" user can't purchase coupons")
     }
     else {
-      
+      if (window.confirm("You can't purchase this coupon beacuse you are logout, do you wan't to login?")) {
+        history.push("/login");
+      }
     }
-  }
-
-  const updateCouponChangeHandler = () => {
-    setEdit(true)
-    
-  }
-
-  const onCancel = () => {
-    setEdit(false)
-  }
-
-  const onSave = (props)=>{
-    setEdit(false)
-    setCoupon(props)
   }
 
   const onPurchase=  useCallback(async () => {
@@ -105,7 +105,7 @@ const Coupon = (props) => {
   }
 
   return (
-    <div >
+    <React.Fragment >
       {availCoupon && 
       <Card className={classes.coupon}>
         {viewCoupon}
@@ -116,7 +116,7 @@ const Coupon = (props) => {
         
         {viewCall==="home" && <button onClick={purchaseCouponChangeHandler} >BUY COUPUN</button>}
       </Card>}
-    </div>
+    </React.Fragment >
   );
 };
 

@@ -94,7 +94,7 @@ public class CustomerController {
 		return new ResponseEntity<>("Session time out! ", HttpStatus.BAD_REQUEST);
 	}
 
-	@GetMapping("/customerDetails/{token}")
+	@GetMapping("/customer/{token}")
 	@ResponseBody
 	public ResponseEntity<?> viewCompanyDetails(@PathVariable String token) {
 		System.out.println("Got a request details");

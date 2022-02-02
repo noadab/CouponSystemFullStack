@@ -3,11 +3,13 @@ import Select from "react-select";
 import { useSelector } from "react-redux";
 
 import classes from './Coupon.module.css';
+import fetchWrapper from '../../helper/fetchWrapper'
 
 const UpdateCoupon = (props) => {
 
     const token = useSelector((state) => state.auth.token);
-
+    const userType = useSelector((state) => state.auth.userType);
+  
     const titleRef = useRef("");
     const descriptionRef = useRef("");
     const releaseDateRef = useRef("");
@@ -29,7 +31,7 @@ const UpdateCoupon = (props) => {
     const onSubmitHandler = useCallback(async (event) => {
         event.preventDefault();
 
-        const coupon = {
+        const couponToSend = {
             id: props.coupon.id,
             title: titleRef.current.value == "" ? props.coupon.title : titleRef.current.value,
             description: descriptionRef.current.value == "" ? props.coupon.description : titleRef.current.value,
@@ -40,34 +42,23 @@ const UpdateCoupon = (props) => {
             price: priceRef.current.value == "" ? props.coupon.price : priceRef.current.value,
             image: props.coupon.image,
         };
-        console.log(coupon);
+        console.log(couponToSend);
 
-        const requestOptions = {
-            method: "PUT",
-            headers: { "Content-Type": "application/json", token: token },
-            body: JSON.stringify(coupon),
-        };
-
+        const method = "PUT";
+        const path = "/"+userType+"/update";
         try {
-            const response = await fetch("/company/update", requestOptions);
-            const text = await response.text();
-            if (response.statusText === "Method Not Allowed") {
-                window.alert(text);
-            }
-            else if (!response.ok) {
-                window.alert(text);
-                throw new Error("Something went wrong!");
-            }
-            console.log("Response Okay!");
-            props.onSave(coupon)
+            const data = await fetchWrapper.fetch(method, path, couponToSend, token, () => {
+                console.log("error");
+            })
+            console.log(couponToSend);
         } catch (error) {
             console.log(error.message);
         }
     }, []);
 
     const onCancel = () => {
-        if (window.confirm("are you sure you want to cancel?")) {
-            props.onCancel(props.coupon)
+        if (window.confirm("Are you sure you want to cancel?")) {
+            props.onCancel();
         }
     }
     return (

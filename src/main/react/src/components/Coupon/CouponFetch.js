@@ -1,48 +1,32 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
-import { authActions } from "../../store/auth";
 
+import fetchWrapper from '../../helper/fetchWrapper'
 import CouponList from './CouponList'
 import CouponsFilter from './CouponsFilter'
-import classes from './CouponList.module.css'
 
 const CouponFetch = () => {
 
   const userType = useSelector(state => state.auth.userType);
   const token = useSelector(state => state.auth.token);
-  const dispatch = useDispatch();
 
-  const [fetchCoupons, setFetchCoupons] = useState(false);
   const [coupons, setCoupons] = useState([]);
+  const [isCouponsFetch, setIsCouponsFetch] = useState(false);
+
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
   const fetchCouponsHandler = useCallback(async (event) => {
     setIsLoading(true);
     setError(null);
-    let response;
+    let data;
     try {
       if ((event.value) != ("No filter")) {
-        response = await fetch("/" + userType + "/all" + event.type + "/" + event.value + "/" + token);
+        data = await fetchWrapper.get("/" + userType + "/all" + event.type + "/" + event.value + "/" + token)
       }
       else {
-        response = await fetch("/" + userType + "/all/" + token);
-        console.log(response)
+        data = await fetchWrapper.get("/" + userType + "/all/" + token)
       }
-
-      if (response.statusText === "Not Found") {
-        setError(await response.text());
-        console.log(error)
-      }
-      else if (!response.ok) {
-        window.alert("Session timeout!");
-        setError(await response.text());
-        dispatch(authActions.logout());
-        throw new Error("Something went wrong!");
-      }
-      else {
-        console.log("Response Okay!");
-        const data = await response.json();
         const transformedCoupons = data.map((couponData) => {
           return {
             id: couponData.id,
@@ -57,11 +41,12 @@ const CouponFetch = () => {
           };
         });
         setCoupons(transformedCoupons);
-      }
     } catch (error) {
+      console.log(error.message);
       setError(error.message);
+
     }
-    setFetchCoupons(true);
+    setIsCouponsFetch(true);
     setIsLoading(false);
   }, []);
 
@@ -83,23 +68,23 @@ const CouponFetch = () => {
     content = <section>Loading...</section>;
   }
 
-  if (!fetchCoupons) {
+  if (!isCouponsFetch) {
     content = null;
   }
 
   const closeCouponsListHandler = () => {
-    setFetchCoupons(false);
+    setIsCouponsFetch(false);
   }
   const openCouponsListHandler = ()=> {
     fetchCouponsHandler({value:'',type:''});
-    setFetchCoupons(true);
+    setIsCouponsFetch(true);
   }
 
   return (
     <div >
-      {fetchCoupons && <button onClick={closeCouponsListHandler} >Close coupons</button>}
-      {fetchCoupons && <CouponsFilter onFilter={fetchCouponsHandler} />}
-      {!fetchCoupons && <button onClick={openCouponsListHandler}>Fetch coupons</button>}
+      {isCouponsFetch && <button onClick={closeCouponsListHandler} >Close coupons</button>}
+      {isCouponsFetch && <CouponsFilter onFilter={fetchCouponsHandler} />}
+      {!isCouponsFetch && <button onClick={openCouponsListHandler}>Fetch coupons</button>}
       {content != null && <div>{content}</div>}
     </div>
   )

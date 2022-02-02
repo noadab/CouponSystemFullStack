@@ -11,36 +11,29 @@ const Client = (props) => {
   const userType = useSelector(state => state.auth.userType);
   const token = useSelector((state) => state.auth.token);
 
-  const [client,setClient]= useState();
+  const [currClient,setCurrClient]= useState(props);
   const [error, setError] = useState(null);
   const [isAvailClient, setAvailClient] = useState(true);
   const [edit, setEdit] = useState(false);
 
   let content = <div>cant show user details</div>
-
-  if (props.client != []) {
-    if (userType === "admin") {
-      content = <CardClient client={props} />
-    }
-    else {
-      content = <CardClient client={props.client} />
-    }
-  }
+    
+  content = <CardClient client={currClient} />
+     
 
   const deleteClient = useCallback(async (event) => {
     event.preventDefault();
     setError(null);
     let method = "DELETE";
-    let path = "admin/delete/" + props.clientType + "/" + props.id;
+    let path = "admin/delete/" + currClient.clientType + "/" + currClient.id;
     try {
-        const data = await fetchWrapper.delete(method, path, token, () => {
-          console.log(data)
-      })
-      setAvailClient(false);
+        const data = await fetchWrapper.delete(method, path, token, () => {})
+        setAvailClient(false);
      
-    } catch (Error) {
-      
-    }
+    }catch (error) {
+      console.log(error.message);
+      setError(error.message);
+  }
   }, []);
 
   const deleteChangeHandler = (event) => {
@@ -49,8 +42,7 @@ const Client = (props) => {
     }
   }
 
-  const updateChangeHandler = () => {
-    console.log("aaaa")
+  const updateClientChangeHandler = () => {
     setEdit(true);
   }
 
@@ -59,12 +51,12 @@ const Client = (props) => {
 
   }
   const onSave = (props) => {
-    setClient(props);
     setEdit(false);
+    setCurrClient(props);
   }
 
   if (edit) {
-    content = <ClientForm defaultData={props} requestClient={props.clientType} onCancel={onCancel} onSave={onSave} />
+    content = <ClientForm defaultData={currClient} requestClient={currClient.clientType} onCancel={onCancel} onSave={onSave} />
   
   }
   
@@ -76,9 +68,10 @@ const Client = (props) => {
   
   return (
     <React.Fragment>
-      {isAvailClient && <div className={classes.client}>
+      {isAvailClient && 
+      <div className={classes.client}>
         {content}
-        {userType === "admin" && !edit && <button onClick={updateChangeHandler}>update</button>}
+        {userType === "admin" && !edit && <button onClick={updateClientChangeHandler}>update</button>}
         {userType === "admin" && !edit && <button onClick={deleteChangeHandler}>delete</button>}
       </div>}
     </React.Fragment>

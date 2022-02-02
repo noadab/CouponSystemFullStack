@@ -4,12 +4,12 @@ import { useSelector } from "react-redux";
 import Select from "react-select";
 
 import classes from './CreateCoupon.module.css';
-import Card from '../../UI/card/Card'
+import fetchWrapper from '../../helper/fetchWrapper'
 
 function CreateCoupon(props) {
 
   const token = useSelector((state) => state.auth.token);
-
+  const userType= useSelector ((state) => state.auth.userType);
   const titleRef = useRef("");
   const descriptionRef = useRef("");
   const releaseDateRef= useRef("");
@@ -33,9 +33,8 @@ function CreateCoupon(props) {
 
   const submitHandler = useCallback(async (event) => {
     event.preventDefault();
-    // could add validation here...
 
-    const coupon = {
+    const couponToSend = {
       title: titleRef.current.value,
       description: descriptionRef.current.value,
       category: categoryRef.current.state.selectValue[0].label,
@@ -46,29 +45,15 @@ function CreateCoupon(props) {
       image: imageRef.current.value,
     };
 
-    console.log(coupon);
-
-    // POST request using fetch inside useEffect React hook
-    const requestOptions = {
-      method: "POST",
-      headers: { "Content-Type": "application/json", token: token },
-      body: JSON.stringify(coupon),
-    };
+    console.log(couponToSend);
+    const method = "POST";
+    const path="/"+userType+"/add";
+    
     try {
-      const response = await fetch("/company/add", requestOptions);
-      const text = await response.text();
-      if (response.statusText==="Method Not Allowed"){
-        window.alert(text);
-    }
-    else if (!response.ok) {
-      window.alert(text);
-      //dispatch(authActions.logout());
-      throw new Error("Something went wrong!");
-    }
-
-      console.log("Response Okay!");
-
-      console.log(text);
+      const data = await fetchWrapper.fetch(method, path, couponToSend, token, () => {
+        console.log("error");
+    })
+    console.log("coupon sent to server: " + couponToSend);
     } catch (error) {
       console.log(error.message);
     }
