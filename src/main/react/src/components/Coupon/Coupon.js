@@ -48,9 +48,6 @@ const Coupon = (props) => {
     }
   }
 
-
-  
-
   const updateCouponChangeHandler = () => {
     setEdit(true)
     
@@ -64,6 +61,16 @@ const Coupon = (props) => {
     setEdit(false)
     setCoupon(props)
   }
+  
+  if (edit) {
+    viewCoupon = <UpdateCoupon coupon={coupon} onCancel={onCancel} onSave={onSave} ></UpdateCoupon>
+  }
+
+  // if (error){
+  //   <section>
+  //     {error}
+  //   </section>
+  // }
   const purchaseCouponChangeHandler = () => {
     if (userType==="customer"){
       if (window.confirm("Do you wan't to buy this coupon?")) {
@@ -97,11 +104,6 @@ const Coupon = (props) => {
             console.log(error.message);
         }
   }, [])
-  
-  
-  if (edit) {
-    viewCoupon = <UpdateCoupon coupon={coupon} onCancel={onCancel} onSave={onSave} ></UpdateCoupon>
-  }
 
   return (
     <React.Fragment >

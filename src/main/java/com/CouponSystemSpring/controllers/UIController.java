@@ -33,7 +33,7 @@ public class UIController {
 			List<Coupon> coupons = UIService.allCoupons();
 			return new ResponseEntity<List<Coupon>>(coupons, HttpStatus.OK);
 		} catch (DoesNotExistInDBException e) {
-			return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
+			return new ResponseEntity<String>("There is no coupon", HttpStatus.NOT_FOUND);
 		} catch (Exception e) {
 			return new ResponseEntity<String>("Something went wrong!", HttpStatus.METHOD_NOT_ALLOWED);
 		}
