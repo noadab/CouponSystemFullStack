@@ -93,7 +93,6 @@ const Coupon = (props) => {
             const data = await fetchWrapper.fetch(method, path, couponToSend, token, () => {
                 console.log("error");
             })
-            alert("Enjoy your new coupon! ");
         } catch (error) {
             console.log(error.message);
         }

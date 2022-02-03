@@ -5,9 +5,8 @@ import { Route, Switch } from "react-router-dom";
 import Header from './components/Header';
 import CompanyDashboard from './pages/CompanyDashboard';
 import CustomerDashboard from './pages/CustomerDashboard'
-import AdminDashboard from './pages/AdminDashboard'
 import Welcome from './pages/Welcome'
-import Auth from './login/Auth';
+import LoginPage from './pages/LoginPage';
 import AddCouponForm from './pages/AddCouponForm';
 import Companies from './pages/Companies';
 import Customers from './pages/Customers';
@@ -41,12 +40,12 @@ function App() {
       <Switch>
         
         <Route path="/" exact>
-         {!isAuth && <Auth />}
+         {!isAuth && <LoginPage />}
          {isAuth && <Welcome/>}
         </Route>
 
         <Route path="/login" exact>
-          <Auth />
+          <LoginPage />
         </Route>
 
         <Route path="/HomePage" exact>

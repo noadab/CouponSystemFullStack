@@ -7,16 +7,7 @@ section {
     padding: 2rem;
     border-radius: 12px;
   }
-  
-  /* .Client {
-    margin: 1rem auto;
-
-    padding: 2rem;
-    border-radius: 12px;
-    display: flex;
-    justify-content: center;
-  }  */
-  
+    
   button {
     font: inherit;
     cursor: pointer;
