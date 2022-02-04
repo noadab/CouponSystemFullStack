@@ -25,7 +25,7 @@ public class UIController {
 	@Autowired
 	private UIService UIService;
 
-	@GetMapping("/all/")
+	@GetMapping("/all")
 	@ResponseBody
 	public ResponseEntity<?> viewAllCoupons() {
 		System.out.println("Got a request (all) from web!");

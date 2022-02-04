@@ -1,6 +1,5 @@
 package com.CouponSystemSpring.controllers;
 
-
 import com.CouponSystemSpring.entities.Company;
 import com.CouponSystemSpring.entities.Coupon;
 import com.CouponSystemSpring.entities.Customer;
@@ -23,26 +22,27 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/admin")
 public class AdminController {
 
-    @Autowired
-    private SimpleTokenManager simpleTokenManager;
-    @Autowired
-    private AdminService adminService;
+	@Autowired
+	private SimpleTokenManager simpleTokenManager;
+	@Autowired
+	private AdminService adminService;
 
-    @PostMapping("/login")
-    public ResponseEntity<?> login (@RequestBody Credentials cred) {
-        System.out.println("email: "+cred.getEmail()+" password: "+cred.getPassword());
-        if (adminService.login(cred.getEmail(), cred.getPassword())) {
-            String token = simpleTokenManager.getNewToken();
-            return new ResponseEntity<String>(token, HttpStatus.OK);
-        }
-        return new ResponseEntity<String> ("Email or password are incorrect, can't log in",HttpStatus.BAD_REQUEST);
-    }
-    
-    @GetMapping("/company/{token}")
+	@PostMapping("/login")
+	public ResponseEntity<?> login(@RequestBody Credentials cred) {
+		System.out.println("email: " + cred.getEmail() + " password: " + cred.getPassword());
+		if (adminService.login(cred.getEmail(), cred.getPassword())) {
+			String token = simpleTokenManager.getNewToken();
+			simpleTokenManager.initThread();
+			return new ResponseEntity<String>(token, HttpStatus.OK);
+		}
+		return new ResponseEntity<String>("Email or password are incorrect, can't log in", HttpStatus.BAD_REQUEST);
+	}
+
+	@GetMapping("/company/{token}")
 	@ResponseBody
-	public ResponseEntity <?> viewAllCompanies(@PathVariable String token){
+	public ResponseEntity<?> viewAllCompanies(@PathVariable String token) {
 		System.out.println("Got a request (all companies) from client!");
-		if (simpleTokenManager.isTokenExist(token)){
+		if (simpleTokenManager.isTokenExist(token)) {
 			List<Company> companies;
 			try {
 				companies = adminService.getAllCompanies();
@@ -52,18 +52,17 @@ public class AdminController {
 			} catch (Exception e) {
 				return new ResponseEntity<String>("Something went wrong!", HttpStatus.METHOD_NOT_ALLOWED);
 			}
-			
-			
+
 		}
-		return new ResponseEntity<>("Session time out! ",HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>("Session time out! ", HttpStatus.BAD_REQUEST);
 
 	}
-    
-    @PostMapping("/add/company")
-	public ResponseEntity<?> addCompany (@RequestBody Company company, @RequestHeader("token") String token){
+
+	@PostMapping("/add/company")
+	public ResponseEntity<?> addCompany(@RequestBody Company company, @RequestHeader("token") String token) {
 
 		System.out.println("got a call");
-		System.out.println("Got a new company: "+company+", token="+token);
+		System.out.println("Got a new company: " + company + ", token=" + token);
 		if (simpleTokenManager.isTokenExist(token)) {
 			try {
 				adminService.addCompany(company);
@@ -74,15 +73,15 @@ public class AdminController {
 				return new ResponseEntity<String>("Something went wrong!", HttpStatus.METHOD_NOT_ALLOWED);
 			}
 		}
-		return new ResponseEntity<>("Session time out! ",HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>("Session time out! ", HttpStatus.BAD_REQUEST);
 	}
-	
+
 	@PutMapping("/update/company")
-	public ResponseEntity<?> updateCompany (@RequestBody Company company,  @RequestHeader("token") String token){
+	public ResponseEntity<?> updateCompany(@RequestBody Company company, @RequestHeader("token") String token) {
 		System.out.println("got a call");
-		System.out.println("Got a update comapny: "+company+", token="+token);
+		System.out.println("Got a update comapny: " + company + ", token=" + token);
 		if (simpleTokenManager.isTokenExist(token)) {
-			
+
 			try {
 				adminService.updateCompany(company);
 				return new ResponseEntity<String>("Company update", HttpStatus.OK);
@@ -91,19 +90,19 @@ public class AdminController {
 			} catch (Exception e) {
 				return new ResponseEntity<String>("Something went wrong!", HttpStatus.METHOD_NOT_ALLOWED);
 			}
-			
+
 		}
-		return new ResponseEntity<>("Session time out! ",HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>("Session time out! ", HttpStatus.BAD_REQUEST);
 	}
-	
+
 	@DeleteMapping("delete/company/{id}")
-	public ResponseEntity<?> deleteComapny (@PathVariable int id, @RequestHeader("token") String token){
+	public ResponseEntity<?> deleteComapny(@PathVariable int id, @RequestHeader("token") String token) {
 		System.out.println("Got a request (delete) from client!");
 		if (simpleTokenManager.isTokenExist(token)) {
 			try {
 				adminService.deleteCompany(id);
 				return new ResponseEntity<String>("Company delete", HttpStatus.OK);
-			} catch (DoesNotExistInDBException  e) {
+			} catch (DoesNotExistInDBException e) {
 				return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
 			} catch (Exception e) {
 				return new ResponseEntity<String>("Something went wrong!", HttpStatus.METHOD_NOT_ALLOWED);
@@ -111,12 +110,12 @@ public class AdminController {
 		}
 		return new ResponseEntity<String>("Session time out! ", HttpStatus.BAD_REQUEST);
 	}
-	
-    @GetMapping("/customer/{token}")
+
+	@GetMapping("/customer/{token}")
 	@ResponseBody
-	public ResponseEntity <?> viewAllCustomers(@PathVariable String token){
+	public ResponseEntity<?> viewAllCustomers(@PathVariable String token) {
 		System.out.println("Got a request (all customers) from client!");
-		if (simpleTokenManager.isTokenExist(token)){
+		if (simpleTokenManager.isTokenExist(token)) {
 			List<Customer> customers;
 			try {
 				customers = adminService.getAllCustomers();
@@ -126,17 +125,16 @@ public class AdminController {
 			} catch (Exception e) {
 				return new ResponseEntity<String>("Somthing wrong", HttpStatus.METHOD_NOT_ALLOWED);
 			}
-			
-			
+
 		}
-		return new ResponseEntity<>("Error",HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>("Error", HttpStatus.BAD_REQUEST);
 	}
 
-    @PostMapping("/add/customer")
-	public ResponseEntity<?> addCompanyustomer (@RequestBody Customer customer, @RequestHeader("token") String token){
+	@PostMapping("/add/customer")
+	public ResponseEntity<?> addCompanyustomer(@RequestBody Customer customer, @RequestHeader("token") String token) {
 
 		System.out.println("got a call");
-		System.out.println("Got a new company: "+customer+", token="+token);
+		System.out.println("Got a new company: " + customer + ", token=" + token);
 		if (simpleTokenManager.isTokenExist(token)) {
 			try {
 				adminService.addCustomer(customer);
@@ -147,15 +145,16 @@ public class AdminController {
 				return new ResponseEntity<String>("Something went wrong!", HttpStatus.METHOD_NOT_ALLOWED);
 			}
 		}
-		return new ResponseEntity<>("Session time out! ",HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>("Session time out! ", HttpStatus.BAD_REQUEST);
 	}
-	
+
 	@PutMapping("/update/customer")
-	public ResponseEntity<?> updateCompanyustomer (@RequestBody Customer customer,  @RequestHeader("token") String token){
+	public ResponseEntity<?> updateCompanyustomer(@RequestBody Customer customer,
+			@RequestHeader("token") String token) {
 		System.out.println("got a call");
-		System.out.println("Got a update comapny: "+customer+", token="+token);
+		System.out.println("Got a update comapny: " + customer + ", token=" + token);
 		if (simpleTokenManager.isTokenExist(token)) {
-			
+
 			try {
 				adminService.updateCustomer(customer);
 				return new ResponseEntity<String>("Customer update", HttpStatus.OK);
@@ -164,19 +163,19 @@ public class AdminController {
 			} catch (Exception e) {
 				return new ResponseEntity<String>("Something went wrong!", HttpStatus.METHOD_NOT_ALLOWED);
 			}
-			
+
 		}
-		return new ResponseEntity<>("Session time out! ",HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>("Session time out! ", HttpStatus.BAD_REQUEST);
 	}
-	
+
 	@DeleteMapping("delete/customer/{id}")
-	public ResponseEntity<?> deleteCustomer (@PathVariable int id, @RequestHeader("token") String token){
+	public ResponseEntity<?> deleteCustomer(@PathVariable int id, @RequestHeader("token") String token) {
 		System.out.println("Got a request (delete) from client!");
 		if (simpleTokenManager.isTokenExist(token)) {
 			try {
 				adminService.deleteCustomer(id);
 				return new ResponseEntity<String>("Customer delete", HttpStatus.OK);
-			} catch (DoesNotExistInDBException  e) {
+			} catch (DoesNotExistInDBException e) {
 				return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
 			} catch (Exception e) {
 				return new ResponseEntity<String>("Something went wrong!", HttpStatus.METHOD_NOT_ALLOWED);
@@ -184,5 +183,5 @@ public class AdminController {
 		}
 		return new ResponseEntity<String>("Session time out! ", HttpStatus.BAD_REQUEST);
 	}
-	
+
 }

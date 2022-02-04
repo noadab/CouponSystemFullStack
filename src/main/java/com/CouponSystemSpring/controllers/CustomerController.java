@@ -31,6 +31,7 @@ public class CustomerController {
 		System.out.println("email: " + cred.getEmail() + " password: " + cred.getPassword());
 		if (customerService.login(cred.getEmail(), cred.getPassword())) {
 			String token = simpleTokenManager.getNewToken();
+			simpleTokenManager.initThread();
 			return new ResponseEntity<String>(token, HttpStatus.OK);
 		}
 		return new ResponseEntity<String>("Email or password are incorrect, can't log in", HttpStatus.BAD_REQUEST);
@@ -112,7 +113,7 @@ public class CustomerController {
 
 	@PutMapping("/purchasesCoupon")
 	public ResponseEntity<?> purchasesCoupon(@RequestBody Coupon coupon, @RequestHeader("token") String token) {
-		System.out.println("Got a call to purchase "+coupon);
+		System.out.println("Got a call to purchase " + coupon);
 		if (simpleTokenManager.isTokenExist(token)) {
 			try {
 				customerService.purchaseCoupon(coupon.getId());

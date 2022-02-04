@@ -1,4 +1,4 @@
-import { Fragment, useEffect } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Route, Switch } from "react-router-dom";
 
@@ -14,9 +14,11 @@ import { authActions } from "./store/auth"
 
 
 function App() {
- 
-  const dispatch = useDispatch();
 
+  const dispatch = useDispatch();
+  const isAuth = useSelector(state => state.auth.isAuthenticated);
+  const userType = useSelector(state => state.auth.userType);
+  const logout = localStorage.getItem('isLoggedIn');
   useEffect(() => {
     const storedUser_LoggedIn_Information = localStorage.getItem('isLoggedIn');
     const storedUser_Token_Information = localStorage.getItem('token');
@@ -28,20 +30,19 @@ function App() {
     else {
       dispatch(authActions.logout());
     }
-  }, [dispatch]);
-   
-  const isAuth = useSelector(state => state.auth.isAuthenticated);
-  const userType = useSelector(state => state.auth.userType);
+  }, [logout]);
+
+
 
   return (
     <Fragment>
       <Header />
-      
+
       <Switch>
-        
+
         <Route path="/" exact>
-         {!isAuth && <LoginPage />}
-         {isAuth && <Welcome/>}
+          {!isAuth && <LoginPage />}
+          {isAuth && <Welcome />}
         </Route>
 
         <Route path="/login" exact>
@@ -49,33 +50,33 @@ function App() {
         </Route>
 
         <Route path="/HomePage" exact>
-          <Welcome/>
+          <Welcome />
         </Route>
 
-        {userType==="admin" && <Route path="/companies" exact>
+        {userType === "admin" && <Route path="/companies" exact>
           <Companies />
         </Route>}
 
-        {userType==="admin" && <Route path="/customers" exact>
+        {userType === "admin" && <Route path="/customers" exact>
           <Customers />
         </Route>}
 
-        {userType==="company" && <Route path="/addCoupon" exact>
+        {userType === "company" && <Route path="/addCoupon" exact>
           <AddCouponForm />
         </Route>}
 
         <Route path="/dashboard" exact>
-          {!isAuth && <Welcome/>}
-          {userType==="company" && <CompanyDashboard/>}
-          {userType==="customer" && <CustomerDashboard/>}
-          {userType==="admin" && <Welcome/>}
+          {!isAuth && <Welcome />}
+          {userType === "company" && <CompanyDashboard />}
+          {userType === "customer" && <CustomerDashboard />}
+          {userType === "admin" && <Welcome />}
         </Route>
-        
+
         <Route path="/">
-          <Welcome/> 
+          <Welcome />
         </Route>
       </Switch>
-       
+
     </Fragment>
   );
 }

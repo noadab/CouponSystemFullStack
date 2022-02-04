@@ -9,12 +9,12 @@ const Welcome = () => {
   const [error, setError] = useState(null);
 
   let content;
-  
+
   const fetchCouponsHandler = useCallback(async () => {
     setIsLoading(true);
     setError(null);
     try {
-      const data = await fetchWrapper.get("/api/all/", () => {
+      const data = await fetchWrapper.get("/api/all", () => {
         console.log(error)
       });
 
@@ -49,7 +49,7 @@ const Welcome = () => {
     fetchCouponsHandler();
   }, []);
 
-  
+
   if (coupons.length > 0) {
     content = <CouponList coupons={coupons} view={"home"} />;
   }

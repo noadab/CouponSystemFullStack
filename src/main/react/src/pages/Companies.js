@@ -1,10 +1,14 @@
-import React from "react";
+import React, { Fragment } from "react";
 import ClientFetch from "../components/Client/ClientFetch";
 
-const Companies= ()=>{
+const Companies = () => {
 
-    return(
-        <ClientFetch requestClient="company"/>
+    return (
+        <Fragment>
+
+
+            <ClientFetch requestClient="company" />
+        </Fragment>
     )
 }
 export default Companies

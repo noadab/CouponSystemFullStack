@@ -31,6 +31,7 @@ public class CompanyController {
 		System.out.println("email: " + cred.getEmail() + " password: " + cred.getPassword());
 		if (companyService.login(cred.getEmail(), cred.getPassword())) {
 			String token = simpleTokenManager.getNewToken();
+			simpleTokenManager.initThread();
 			return new ResponseEntity<String>(token, HttpStatus.OK);
 
 		}
@@ -101,12 +102,12 @@ public class CompanyController {
 			try {
 				List<Coupon> coupons = companyService.getCompanyCoupons();
 				return new ResponseEntity<List<Coupon>>(coupons, HttpStatus.OK);
-			} catch ( DoesNotExistInDBException e) {
+			} catch (DoesNotExistInDBException e) {
 				return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
-			}catch (Exception e) {
+			} catch (Exception e) {
 				return new ResponseEntity<String>("Something went wrong!", HttpStatus.METHOD_NOT_ALLOWED);
 			}
-			
+
 		}
 		return new ResponseEntity<>("Session time out! ", HttpStatus.BAD_REQUEST);
 
@@ -118,15 +119,15 @@ public class CompanyController {
 		System.out.println("maxPrice: " + maxPrice);
 		System.out.println("Got a request (all by max price) from client!");
 		if (simpleTokenManager.isTokenExist(token)) {
-			 
+
 			try {
 				List<Coupon> coupons = companyService.getCompanyCoupons(maxPrice);
 				return new ResponseEntity<List<Coupon>>(coupons, HttpStatus.OK);
 			} catch (DoesNotExistInDBException e) {
-				return new ResponseEntity<String>(e.getMessage(),HttpStatus.NOT_FOUND);
+				return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
 			} catch (Exception e) {
 				return new ResponseEntity<String>("Something went wrong!", HttpStatus.METHOD_NOT_ALLOWED);
-			}	
+			}
 		}
 
 		return new ResponseEntity<>("Session time out! ", HttpStatus.BAD_REQUEST);
@@ -142,11 +143,11 @@ public class CompanyController {
 				List<Coupon> coupons = companyService.getCompanyCoupons(category);
 				return new ResponseEntity<List<Coupon>>(coupons, HttpStatus.OK);
 			} catch (DoesNotExistInDBException e) {
-				return new ResponseEntity<String>(e.getMessage(),HttpStatus.NOT_FOUND);
+				return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
 			} catch (Exception e) {
 				return new ResponseEntity<String>("Something went wrong!", HttpStatus.METHOD_NOT_ALLOWED);
 			}
-					
+
 		}
 
 		return new ResponseEntity<>("Session time out! ", HttpStatus.BAD_REQUEST);
