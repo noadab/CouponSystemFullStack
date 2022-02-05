@@ -12,11 +12,7 @@ import com.CouponSystemSpring.test.Test;
 public class CouponSystemSpringApplication {
 
 	public static void main(String[] args) {
-		ConfigurableApplicationContext ctx= SpringApplication.run(CouponSystemSpringApplication.class, args);
-
-		Test test=ctx.getBean(Test.class);
-		test.testAll();
-		ctx.close();
+		ConfigurableApplicationContext ctx = SpringApplication.run(CouponSystemSpringApplication.class, args);
 	}
 
 }

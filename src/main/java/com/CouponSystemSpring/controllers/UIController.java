@@ -40,9 +40,10 @@ public class UIController {
 			return new ResponseEntity<String>("Something went wrong!", HttpStatus.METHOD_NOT_ALLOWED);
 		}
 	}
-	
+
 	@DeleteMapping("/logout/{token}")
 	public ResponseEntity<?> deleteToken(@PathVariable String token) {
 		simpleTokenManager.deleteToken(token);
 		return new ResponseEntity<String>("token deleted", HttpStatus.OK);
+	}
 }
