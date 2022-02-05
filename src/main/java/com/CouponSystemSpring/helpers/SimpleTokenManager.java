@@ -71,10 +71,6 @@ public class SimpleTokenManager {
 		tokens.remove(token);
 	}
 
-	synchronized public void deleteToken(String token) {
-		System.out.println("delete token on logout");
-		tokens.remove(token);
-	}
 
 	public class Token {
 		private String token;
