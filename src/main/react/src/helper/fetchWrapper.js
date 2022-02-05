@@ -24,6 +24,8 @@ const BAD_REQUEST = "Bad Request"
 
 async function getHandler(name) {
   const response = await fetch(name);
+  console.log("fetchWrapper get");
+
   console.log(response)
   if (response.statusText === BAD_REQUEST) {
     alert(await response.text());
@@ -48,6 +50,8 @@ async function putHandler(method, name, dataToSend, token, onFail = () => { }) {
     body: JSON.stringify(dataToSend)
   };
   const response = await fetch(name, requestOptions);
+  console.log("fetchWrapper put");
+
   if (response.statusText === BAD_REQUEST) {
     logout();
     alert(await response.text());
@@ -71,6 +75,7 @@ async function deleteHandler(method, name, token, onFail = () => { }) {
     headers: { "Content-Type": "application/json", token: token }
   };
   const response = await fetch(name, requestOptions);
+  console.log("fetchWrapper delete");
   if (response.statusText === BAD_REQUEST) {
     logout();
     alert(await response.text());

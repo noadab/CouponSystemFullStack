@@ -18,16 +18,19 @@ const authSlice = createSlice({
       console.log("Save the new token: " + state.token);
     },
     logout(state) {
-      state.isAuthenticated= false;
-      state.token= 0;
-      state.userType= null;
+      let token = localStorage.getItem('token');
+      const response = fetch('api/logout/' + token, { method: 'DELETE' });
+      console.log(response);
+      state.isAuthenticated = false;
+      state.token = 0;
+      state.userType = null;
       localStorage.removeItem('token');
       localStorage.removeItem('isLoggedIn');
       localStorage.removeItem('userType');
 
     },
-    userTypeHandler (state, action) {
-      state.userType=action.payload;
+    userTypeHandler(state, action) {
+      state.userType = action.payload;
       localStorage.setItem('userType', action.payload);
       console.log(state.userType);
     }
