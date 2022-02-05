@@ -23,37 +23,37 @@ const ClientFetch = (props) => {
             const data = await fetchWrapper.get("/" + userType + "/" + requestClient + "/" + token, () => {
                 setError(error.message);
             });
-            let transformed ;
-            if (userType==="admin"){
+            let transformed;
+            if (userType === "admin") {
                 console.log("admin")
-            transformed = data.map((clientData) => {
-                return {
-                    clientType: requestClient == "company" ? "company" : "customer",
-                    id: clientData.id,
-                    name: requestClient == "company" ? clientData.name : "",
-                    firstName: requestClient == "company" ? "" : clientData.firstName,
-                    lastName: requestClient == "company" ? "" : clientData.lastName,
-                    email: clientData.email,
-                    password: clientData.password
-                }
-            })
-        }
-        else {
-            console.log("else")
-            transformed=
-                 [{
-                    clientType: requestClient == "company" ? "company" : "customer",
-                    id: data.id,
-                    name: requestClient == "company" ? data.name : "",
-                    firstName: requestClient == "company" ? "" : data.firstName,
-                    lastName: requestClient == "company" ? "" : data.lastName,
-                    email: data.email,
-                    password: data.password
-                }]
-        } 
-        console.log(transformed)
-        setClients(transformed)
-           
+                transformed = data.map((clientData) => {
+                    return {
+                        clientType: requestClient == "company" ? "company" : "customer",
+                        id: clientData.id,
+                        name: requestClient == "company" ? clientData.name : "",
+                        firstName: requestClient == "company" ? "" : clientData.firstName,
+                        lastName: requestClient == "company" ? "" : clientData.lastName,
+                        email: clientData.email,
+                        password: clientData.password
+                    }
+                })
+            }
+            else {
+                console.log("else")
+                transformed =
+                    [{
+                        clientType: requestClient == "company" ? "company" : "customer",
+                        id: data.id,
+                        name: requestClient == "company" ? data.name : "",
+                        firstName: requestClient == "company" ? "" : data.firstName,
+                        lastName: requestClient == "company" ? "" : data.lastName,
+                        email: data.email,
+                        password: data.password
+                    }]
+            }
+            console.log(transformed)
+            setClients(transformed)
+
         } catch (error) {
             console.log(error.message);
             setError(error.message);
@@ -95,7 +95,7 @@ const ClientFetch = (props) => {
     }
     return (
         <div >
-            {!add && userType==="admin" && <button onClick={addClientHandler}>Add client</button>}
+            {!add && userType === "admin" && <button onClick={addClientHandler}>Add client</button>}
             {add && <ClientForm defaultData={false} requestClient={requestClient} onCancel={onCancel} onSave={onSave} />}
             {content}
 

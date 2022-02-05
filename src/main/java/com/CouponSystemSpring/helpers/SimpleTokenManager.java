@@ -9,7 +9,7 @@ import java.util.*;
 @Scope("singleton")
 public class SimpleTokenManager {
 
-	private static final long EXPIRATION_TIME_PERIOD_IN_MILLIS = 1000 * 60 * 10; // 10 min
+	private static final long EXPIRATION_TIME_PERIOD_IN_MILLIS = 1000 * 20 * 1; // 10 min
 	private static final long EXPIRATION_THREAD_PERIOD_IN_MILLIS = 1000 * 5; // 5 seconds
 	private static long lastToken = 5678;
 	private Map<String, Token> tokens = new HashMap<String, Token>();
@@ -64,6 +64,11 @@ public class SimpleTokenManager {
 		tokens = remainedTokens;
 		System.out.println("---------------------------------------------------------");
 		System.out.println("Remove Expired Sessions Thread Done, active sessions:" + tokens.size());
+	}
+
+	synchronized public void deleteToken(String token) {
+		System.out.println("delete token on logout");
+		tokens.remove(token);
 	}
 
 	public class Token {
