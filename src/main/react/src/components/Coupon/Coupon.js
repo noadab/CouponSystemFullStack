@@ -50,7 +50,6 @@ const Coupon = (props) => {
 
   const updateCouponChangeHandler = () => {
     setEdit(true)
-    
   }
 
   const onCancel = () => {
@@ -66,11 +65,6 @@ const Coupon = (props) => {
     viewCoupon = <UpdateCoupon coupon={coupon} onCancel={onCancel} onSave={onSave} ></UpdateCoupon>
   }
 
-  // if (error){
-  //   <section>
-  //     {error}
-  //   </section>
-  // }
   const purchaseCouponChangeHandler = () => {
     if (userType==="customer"){
       if (window.confirm("Do you wan't to buy this coupon?")) {

@@ -51,6 +51,7 @@ const UpdateCoupon = (props) => {
                 console.log("error");
             })
             console.log(couponToSend);
+            props.onSave(couponToSend)
         } catch (error) {
             console.log(error.message);
         }

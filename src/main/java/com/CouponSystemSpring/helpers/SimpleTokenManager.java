@@ -65,6 +65,11 @@ public class SimpleTokenManager {
 		System.out.println("---------------------------------------------------------");
 		System.out.println("Remove Expired Sessions Thread Done, active sessions:" + tokens.size());
 	}
+	
+	synchronized public void deleteToken(String token) {
+		System.out.println("delete token on logout");
+		tokens.remove(token);
+	}
 
 	public class Token {
 		private String token;

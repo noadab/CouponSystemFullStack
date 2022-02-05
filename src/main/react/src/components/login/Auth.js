@@ -11,11 +11,9 @@ import { useHistory } from "react-router-dom";
 const emailReducer = (state, action) => {
   if (action.type === 'USER_INPUT') {
     return { value: action.value };
-    // , isValid: action.val.includes('@') };
   }
   if (action.type === 'INPUT_BLUR') {
     return { value: state.value };
-    //, isValid: state.value.includes('@') };
   }
   return { value: '', isValid: false };
 };
@@ -23,28 +21,22 @@ const emailReducer = (state, action) => {
 const passwordReducer = (state, action) => {
   if (action.type === 'USER_INPUT') {
     return { value: action.value };
-    //, isValid: action.val.trim().length > 6 };
   }
   if (action.type === 'INPUT_BLUR') {
     return { value: state.value };
-    //, isValid: state.value.trim().length > 6 };
   }
   return { value: '' }
-  //, isValid: false };
 };
 
 
 const userTypeReducer = (state, action) => {
   if (action.type === 'USER_INPUT') {
     return { value: action.value };
-    //, isValid: action.val.trim().length > 6 };
   }
   if (action.type === 'INPUT_BLUR') {
     return { value: state.value };
-    //, isValid: state.value.trim().length > 6 };
   }
   return { value: '' }
-  //, isValid: false };
 };
 
 
@@ -72,17 +64,14 @@ const Auth = () => {
   };
 
   const [emailState, dispatchEmail] = useReducer(emailReducer, {
-    value: '',
-    //isValid: null,
+    value: ''
   });
   const [passwordState, dispatchPassword] = useReducer(passwordReducer, {
-    value: '',
-    //isValid: null,
+    value: ''
   });
 
   const [userTypeState, dispatchUserType] = useReducer(userTypeReducer, {
-    value: '',
-    //isValid: null,
+    value: ''
   });
 
 
